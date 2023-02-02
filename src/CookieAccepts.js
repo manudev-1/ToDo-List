@@ -4,8 +4,8 @@ function CookieAccepts() {
 
   const p = document.querySelectorAll("#p")
 
-  p.forEach(element => {
-    
+  p.forEach((element) => {
+    var char = element.innerHTML.split("")
   })
 
   return (
