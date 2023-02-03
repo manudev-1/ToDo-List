@@ -6,8 +6,8 @@ module.exports = {
   theme: {
     extend: {
       colors:{
-        'opac': 'rgba(0, 0, 0, 0.5)'
-      }
+        'opac': 'rgba(0, 0, 0, 0.25)'
+      },
     },
   },
   plugins: [],
