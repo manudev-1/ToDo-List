@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "../App.css";
+import trashCan from '../assets/trash-can.svg'
 
 function TODO_LIST() {
   // ! Input Edit
@@ -25,8 +26,9 @@ function TODO_LIST() {
   // ! Todolist
   const [input, setInput] = useState("");
   const [todoList, setTodoList] = useState([]);
+  const [trashNear, setTrashNear] = useState(false)
 
-  const handleInputData = (e) => {
+  const handleInputData = () => {
     if (input !== "") {
       const id = todoList.length + 1;
       setTodoList((prev) => [
@@ -37,8 +39,26 @@ function TODO_LIST() {
           complete: false,
         },
       ]);
+      window.localStorage.setItem("task", JSON.stringify(todoList));
       setInput("");
     }
+  };
+
+  const handleInputDataKB = (e) => {
+    if(e.key === 'Enter')
+      if (input !== "") {
+        const id = todoList.length + 1;
+        setTodoList((prev) => [
+          ...prev,
+          {
+            id: id,
+            task: input,
+            complete: false,
+          },
+        ]);
+        window.localStorage.setItem("task", JSON.stringify(todoList));
+        setInput("");
+      }
   };
 
   const handleCompleteTask = (id) => {
@@ -49,9 +69,14 @@ function TODO_LIST() {
       } else item = { ...task };
       return item;
     });
+    window.localStorage.setItem("task", JSON.stringify(list))
     setTodoList(list);
-    console.log(todoList)
   };
+
+  const handleDistance = () => {
+    setTrashNear(true)
+    console.log(trashNear)
+  }
 
   return (
     <div className="ToDo_List font-lato">
@@ -78,6 +103,7 @@ function TODO_LIST() {
               onBlur={handleInputBlur}
               onInput={(e) => setInput(e.target.value)}
               onChange={handleTitle}
+              onKeyDown={handleInputDataKB}
             />
             <button
               className={
@@ -90,17 +116,23 @@ function TODO_LIST() {
               Add
             </button>
           </div>
-          <div className="bg-white w-1/6 h-64 m-5 shadow-insideShadow rounded-lg p-3 text-gray-600">
+          <div className="w-1/6 m-5 text-gray-600">
             {todoList.map((task) => {
               return (
-                <div
-                  className="flex justify-between items-center"
-                  complete={String(task.complete)}
-                  id={task.id}
-                  onClick={() => handleCompleteTask(task.id)}
-                >
-                  <p className={task.complete ? 'capitalize text-gray-300 duration-500' : 'capitalize text-gray-600 duration-500'}>{task.task}</p>
-                  <p className={task.complete ? 'capitalize text-green-400 opacity-100 duration-500 font-semibold' : 'duration-500 opacity-0'}>Completed</p>
+                <div className="flex items-center">
+                  <div
+                    className="flex justify-between items-center cursor-pointer border-2 border-solid border-black border-collapse px-5 py-2 w-full"
+                    complete={String(task.complete)}
+                    id={task.id}
+                    hover={String(task.hover)}
+                    onClick={() => handleCompleteTask(task.id)}
+                    >
+                    <p className={task.complete ? 'capitalize text-gray-300 duration-500 line-through' : 'capitalize text-gray-600 duration-500'}>{task.task}</p>
+                    <p className={task.complete ? 'capitalize text-black opacity-100 duration-500 font-semibold' : 'duration-500 opacity-0 capitalize font-semibold'}>Completed</p>
+                  </div>
+                  <div className="">
+                    <img src={trashCan} id="trash" alt="trashCan" onMouseMove={handleDistance} className={trashNear ? 'animate-pulse' : null}/>
+                  </div>
                 </div>
               );
             })}
