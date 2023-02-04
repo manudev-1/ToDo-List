@@ -13,12 +13,21 @@ function TODO_LIST() {
     setInputFocus(false);
   };
 
-  // ! todolist
+  // ! Title
+  const [title, setTitle] = useState("")
+
+  const handleTitle = () => {
+    document.title = "ToDo List |"
+    setTitle(document.getElementById("txAdd").value)
+    document.title += " " + title.charAt(0).toUpperCase() + title.slice(1)
+  }
+
+  // ! Todolist
   const [input, setInput] = useState("");
   const [todoList, setTodoList] = useState([]);
 
   const handleInputData = (e) => {
-    if (input != "") {
+    if (input !== "") {
       const id = todoList.length + 1;
       setTodoList((prev) => [
         ...prev,
@@ -35,7 +44,7 @@ function TODO_LIST() {
   const handleCompleteTask = (id) => {
     let list = todoList.map((task) => {
       let item = {};
-      if (task.id == id) {
+      if (task.id === id) {
         item = { ...task, complete: !task.complete };
       } else item = { ...task };
       return item;
@@ -46,12 +55,9 @@ function TODO_LIST() {
 
   return (
     <div className="ToDo_List font-lato">
-      <div className="w-screen h-screen bg-gradient-to-tl from-violet-400 via-indigo-600 to-fuchsia-500">
+      <div className="w-screen h-screen ">
         <div className="w-full h-1/2 flex justify-center items-center">
-          <h1 className="stroke font-bold text-9xl absolute text-transparent">
-            ToDo-List
-          </h1>
-          <h1 className="animate font-bold text-9xl absolute text-indigo-600">
+          <h1 className="stroke font-bold text-9xl">
             ToDo-List
           </h1>
         </div>
@@ -61,8 +67,8 @@ function TODO_LIST() {
               type="text"
               className={
                 inputFocus
-                  ? "outline-none border-none h-10 w-5/6 rounded-lg p-2 duration-500 capitalize filter drop-shadow-glowing placeholder:text-gray-700"
-                  : "outline-none border-none h-10 w-5/6 rounded-lg p-2 duration-500 capitalize placeholder:text-gray-700"
+                  ? "outline-none border-none h-10 w-5/6 rounded-lg p-2 duration-500 capitalize filter drop-shadow-glowing placeholder:text-gray-200 bg-black text-gray-200"
+                  : "outline-none border-none h-10 w-5/6 rounded-lg p-2 duration-500 capitalize placeholder:text-gray-200 bg-black"
               }
               placeholder="What will you do?"
               maxLength={15}
@@ -71,12 +77,13 @@ function TODO_LIST() {
               onFocus={handleInputFocus}
               onBlur={handleInputBlur}
               onInput={(e) => setInput(e.target.value)}
+              onChange={handleTitle}
             />
             <button
               className={
                 inputFocus
-                  ? "w-1/6 bg-white rounded-lg text-gray-700 filter drop-shadow-glowing duration-500"
-                  : "w-1/6 duration-500 bg-white rounded-lg text-gray-700"
+                  ? "w-1/6 bg-black rounded-lg text-gray-200 filter drop-shadow-glowing duration-500"
+                  : "w-1/6 duration-500 bg-black rounded-lg text-gray-200"
               }
               onClick={() => handleInputData()}
             >

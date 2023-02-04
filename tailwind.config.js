@@ -21,7 +21,7 @@ module.exports = {
         'right-m': 'calc(100% - 10px)'
       },
       dropShadow: {
-        'glowing': '0 0 10px #fff',
+        'glowing': '0 0 10px #000',
       },
       boxShadow: {
         'insideShadow': 'inset 0 2px 10px #000'
