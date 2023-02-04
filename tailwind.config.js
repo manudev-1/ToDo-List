@@ -5,9 +5,27 @@ module.exports = {
   ],
   theme: {
     extend: {
-      colors:{
+      colors: {
         'opac': 'rgba(0, 0, 0, 0.25)'
       },
+      fontFamily: {
+        'lato': ['Lato', 'sans-serif']
+      },
+      backgroundImage: {
+        'add': 'url(./assets/plus.png)'
+      },
+      backgroundSize: {
+        '5': '1.25rem/* 20px */'
+      },
+      backgroundPosition: {
+        'right-m': 'calc(100% - 10px)'
+      },
+      dropShadow: {
+        'glowing': '0 0 10px #fff',
+      },
+      boxShadow: {
+        'insideShadow': 'inset 0 2px 10px #000'
+      }
     },
   },
   plugins: [],
