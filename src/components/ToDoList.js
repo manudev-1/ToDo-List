@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../App.css";
-import trashCan from '../assets/trash-can.svg'
+import trashCan from "../assets/trash-can.svg";
 
 function TODO_LIST() {
   // ! Input Edit
@@ -15,18 +15,17 @@ function TODO_LIST() {
   };
 
   // ! Title
-  const [title, setTitle] = useState("")
+  const [title, setTitle] = useState("");
 
   const handleTitle = () => {
-    document.title = "ToDo List |"
-    setTitle(document.getElementById("txAdd").value)
-    document.title += " " + title.charAt(0).toUpperCase() + title.slice(1)
-  }
+    document.title = "ToDo List |";
+    setTitle(document.getElementById("txAdd").value);
+    document.title += " " + title.charAt(0).toUpperCase() + title.slice(1);
+  };
 
   // ! Todolist
   const [input, setInput] = useState("");
   const [todoList, setTodoList] = useState([]);
-  const [trashNear, setTrashNear] = useState(false)
 
   const handleInputData = () => {
     if (input !== "") {
@@ -37,15 +36,15 @@ function TODO_LIST() {
           id: id,
           task: input,
           complete: false,
+          trashNear: false,
         },
       ]);
-      window.localStorage.setItem("task", JSON.stringify(todoList));
       setInput("");
     }
   };
 
   const handleInputDataKB = (e) => {
-    if(e.key === 'Enter')
+    if (e.key === "Enter")
       if (input !== "") {
         const id = todoList.length + 1;
         setTodoList((prev) => [
@@ -54,9 +53,9 @@ function TODO_LIST() {
             id: id,
             task: input,
             complete: false,
+            trashNear: false,
           },
         ]);
-        window.localStorage.setItem("task", JSON.stringify(todoList));
         setInput("");
       }
   };
@@ -69,22 +68,25 @@ function TODO_LIST() {
       } else item = { ...task };
       return item;
     });
-    window.localStorage.setItem("task", JSON.stringify(list))
     setTodoList(list);
   };
 
-  const handleDistance = () => {
-    setTrashNear(true)
-    console.log(trashNear)
-  }
+  const handleDistance = (id) => {
+    let list = todoList.map((task) => {
+      let item = {};
+      if (task.id === id) {
+        item = { ...task, trashNear: !task.trashNear };
+      } else item = { ...task };
+      return item;
+    });
+    setTodoList(list);
+  };
 
   return (
     <div className="ToDo_List font-lato">
       <div className="w-screen h-screen ">
         <div className="w-full h-1/2 flex justify-center items-center">
-          <h1 className="stroke font-bold text-9xl">
-            ToDo-List
-          </h1>
+          <h1 className="stroke font-bold text-9xl">ToDo-List</h1>
         </div>
         <div className="flex flex-col items-center">
           <div className="w-1/6 flex">
@@ -93,7 +95,7 @@ function TODO_LIST() {
               className={
                 inputFocus
                   ? "outline-none border-none h-10 w-5/6 rounded-lg p-2 duration-500 capitalize filter drop-shadow-glowing placeholder:text-gray-200 bg-black text-gray-200"
-                  : "outline-none border-none h-10 w-5/6 rounded-lg p-2 duration-500 capitalize placeholder:text-gray-200 bg-black"
+                  : "outline-none border-none h-10 w-5/6 rounded-lg p-2 duration-500 capitalize placeholder:text-gray-200 bg-black text-gray-200"
               }
               placeholder="What will you do?"
               maxLength={15}
@@ -126,12 +128,37 @@ function TODO_LIST() {
                     id={task.id}
                     hover={String(task.hover)}
                     onClick={() => handleCompleteTask(task.id)}
+                  >
+                    <p
+                      className={
+                        task.complete
+                          ? "capitalize text-gray-300 duration-500 line-through"
+                          : "capitalize text-gray-600 duration-500"
+                      }
                     >
-                    <p className={task.complete ? 'capitalize text-gray-300 duration-500 line-through' : 'capitalize text-gray-600 duration-500'}>{task.task}</p>
-                    <p className={task.complete ? 'capitalize text-black opacity-100 duration-500 font-semibold' : 'duration-500 opacity-0 capitalize font-semibold'}>Completed</p>
+                      {task.task}
+                    </p>
+                    <p
+                      className={
+                        task.complete
+                          ? "capitalize text-black opacity-100 duration-500 font-semibold"
+                          : "duration-500 opacity-0 capitalize font-semibold"
+                      }
+                    >
+                      Completed
+                    </p>
                   </div>
                   <div className="">
-                    <img src={trashCan} id="trash" alt="trashCan" onMouseMove={handleDistance} className={trashNear ? 'animate-pulse' : null}/>
+                    <img
+                      src={trashCan}
+                      id="trash"
+                      alt="trashCan"
+                      onMouseEnter={() => handleDistance(task.id)}
+                      onMouseLeave={() => handleDistance(task.id)}
+                      className={
+                        task.trashNear ? "animate__infinite animate__heartBeat" : "animate-none"
+                      }
+                    />
                   </div>
                 </div>
               );

@@ -27,6 +27,11 @@ module.exports = {
         'insideShadow': 'inset 0 2px 10px #000'
       }
     },
+    anitedSetting: {
+      
+    }
   },
-  plugins: [],
+  plugins: [
+    require('tailwindcss-animatecss')
+  ],
 }
