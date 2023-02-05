@@ -26,7 +26,7 @@ For this App I am using:
 
 - [React](https://en.reactjs.org/)
   - [React Router Dom@6](https://reactrouter.com/en/main)
-  - [React DnD - Drag and Drop](https://react-dnd.github.io/react-dnd/about)
+  - [React Beautiful DnD - Drag and Drop](https://www.npmjs.com/package/react-beautiful-dnd)
 - [Tailwind CSS](https://tailwindcss.com/)
   - [TailwindCss - animatecss](https://www.npmjs.com/package/tailwindcss-animatecss?activeTab=readme)
 
