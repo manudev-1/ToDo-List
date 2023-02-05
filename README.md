@@ -18,7 +18,7 @@ Code Style: `Standard` by [Prettier](https://prettier.io/)
 
 ### Screen Shot and Video:
 
-Not yet imported
+![image](https://user-images.githubusercontent.com/83871565/216817886-f6138651-f0ab-4bfd-9685-e7bd3bfb84b2.png)
 
 ### Tech / FrameWork:
 
@@ -87,6 +87,22 @@ And I give you the opportunity to select if a task is Completed or Not:
     console.log(todoList)
   };
 ```
+
+Delete Task:
+
+```
+  const handleDelete = (id) => {
+    let list = todoList.map((task) => {
+      let item = {}
+      if (task.id === id)
+        item = { ...task, deleted: true }
+      else item = { ...task }
+      return item
+    });
+    setTodoList(list)
+  };
+```
+
 ### How To Use It?
 
 Click on the Input, Write the Task, Press the Button and you are done.
