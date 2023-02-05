@@ -49,6 +49,7 @@ We take the Task from the input:
           id: id,
           task: input,
           complete: false,
+          deleted: false
         },
       ]);
       setInput("");
