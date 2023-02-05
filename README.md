@@ -26,6 +26,7 @@ For this App I am using:
 
 - [React](https://en.reactjs.org/)
   - [React Router Dom@6](https://reactrouter.com/en/main)
+  - [React DnD - Drag and Drop](https://react-dnd.github.io/react-dnd/about)
 - [Tailwind CSS](https://tailwindcss.com/)
   - [TailwindCss - animatecss](https://www.npmjs.com/package/tailwindcss-animatecss?activeTab=readme)
 
@@ -49,6 +50,7 @@ We take the Task from the input:
           id: id,
           task: input,
           complete: false,
+          deleted: false
         },
       ]);
       setInput("");
