@@ -36,7 +36,8 @@ We take the Task from the input:
 ```
   const [input, setInput] = useState("");
   const [todoList, setTodoList] = useState([]);
-
+  
+  // FROM Button
   const handleInputData = (e) => {
     if (input != "") {
       const id = todoList.length + 1;
@@ -51,9 +52,28 @@ We take the Task from the input:
       setInput("");
     }
   };
+  
+  // FROM KeyBoard
+  const handleInputDataKB = (e) => {
+    if (e.key === "Enter")
+      if (input !== "") {
+        const id = todoList.length + 1;
+        setTodoList((prev) => [
+          ...prev,
+          {
+            id: id,
+            task: input,
+            complete: false,
+            trashNear: false,
+          },
+        ]);
+        setInput("");
+      }
+  };
 ```
 
 And I give you the opportunity to select if a task is Completed or Not:
+
 ```
   const handleCompleteTask = (id) => {
     let list = todoList.map((task) => {
