@@ -109,4 +109,4 @@ Click on the Input, Write the Task, Press the Button and you are done.
 
 ### License
 
-MIT License
+This project is licensed under the MIT License.
