@@ -25,8 +25,10 @@ Code Style: `Standard` by [Prettier](https://prettier.io/)
 For this App I am using:
 
 - [React](https://en.reactjs.org/)
+  - [React Router Dom@6](https://reactrouter.com/en/main)
 - [Tailwind CSS](https://tailwindcss.com/)
-- [React Router Dom@6](https://reactrouter.com/en/main)
+  - [TailwindCss - animatecss](https://www.npmjs.com/package/tailwindcss-animatecss?activeTab=readme)
+
 
 ### Code Examples
 
