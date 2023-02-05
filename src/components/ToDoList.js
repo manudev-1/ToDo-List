@@ -54,6 +54,7 @@ function TODO_LIST() {
             task: input,
             complete: false,
             trashNear: false,
+            deleted: false
           },
         ]);
         setInput("");
@@ -74,12 +75,23 @@ function TODO_LIST() {
   const handleDistance = (id) => {
     let list = todoList.map((task) => {
       let item = {};
-      if (task.id === id) {
+      if (task.id === id)
         item = { ...task, trashNear: !task.trashNear };
-      } else item = { ...task };
+      else item = { ...task };
       return item;
     });
     setTodoList(list);
+  };
+
+  const handleDelete = (id) => {
+    let list = todoList.map((task) => {
+      let item = {}
+      if (task.id === id)
+        item = { ...task, deleted: true }
+      else item = { ...task }
+      return item
+    });
+    setTodoList(list)
   };
 
   return (
@@ -123,7 +135,7 @@ function TODO_LIST() {
               return (
                 <div className="flex items-center">
                   <div
-                    className="flex justify-between items-center cursor-pointer border-2 border-solid border-black border-collapse px-5 py-2 w-full"
+                    className={task.deleted ? 'hidden' :"flex justify-between items-center cursor-pointer border-2 border-solid border-black border-collapse px-5 py-2 w-full my-2"}
                     complete={String(task.complete)}
                     id={task.id}
                     hover={String(task.hover)}
@@ -132,8 +144,8 @@ function TODO_LIST() {
                     <p
                       className={
                         task.complete
-                          ? "capitalize text-gray-300 duration-500 line-through"
-                          : "capitalize text-gray-600 duration-500"
+                          ? "capitalize text-gray-300 duration-500 line-through text-left"
+                          : "capitalize text-gray-600 duration-500 text-left"
                       }
                     >
                       {task.task}
@@ -150,14 +162,18 @@ function TODO_LIST() {
                   </div>
                   <div className="">
                     <img
+                      className={
+                        task.trashNear ? "animate__infinite animate__heartBeat cursor-pointer duration-500 w-10" : "animate-none cursor-pointer duration-500 w-10"
+                      }
+                      style= {
+                        {'display': task.deleted ? 'none' : 'block'}
+                      }
                       src={trashCan}
-                      id="trash"
                       alt="trashCan"
                       onMouseEnter={() => handleDistance(task.id)}
+                      onMouseOver={() => handleDistance(task.id)}
                       onMouseLeave={() => handleDistance(task.id)}
-                      className={
-                        task.trashNear ? "animate__infinite animate__heartBeat" : "animate-none"
-                      }
+                      onClick={() => handleDelete(task.id)}
                     />
                   </div>
                 </div>
