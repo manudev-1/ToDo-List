@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import "../App.css";
 import trashCan from "../assets/trash-can.svg";
 
@@ -26,6 +27,8 @@ function TODO_LIST() {
   // ! Todolist
   const [input, setInput] = useState("");
   const [todoList, setTodoList] = useState([]);
+  const dragItem = useRef();
+  const dragOverItem = useRef();
 
   const handleInputData = () => {
     if (input !== "") {
@@ -94,6 +97,26 @@ function TODO_LIST() {
     setTodoList(list)
   };
 
+  const dragStart = (e, position) => {
+    dragItem.current = position;
+    console.log(e.target.innerHTML);
+  };
+ 
+  const dragEnter = (e, position) => {
+    dragOverItem.current = position;
+    console.log(e.target.innerHTML);
+  };
+ 
+  const drop = (e) => {
+    const copyListItems = [...todoList];
+    const dragItemContent = copyListItems[dragItem.current];
+    copyListItems.splice(dragItem.current, 1);
+    copyListItems.splice(dragOverItem.current, 0, dragItemContent);
+    dragItem.current = null;
+    dragOverItem.current = null;
+    setTodoList(copyListItems);
+  };
+
   return (
     <div className="ToDo_List font-lato">
       <div className="w-screen h-screen ">
@@ -131,36 +154,39 @@ function TODO_LIST() {
             </button>
           </div>
           <div className="w-1/6 m-5 text-gray-600">
-            {todoList.map((task) => {
-              return (
-                <div className="flex items-center">
-                  <div
-                    className={task.deleted ? 'hidden' :"flex justify-between items-center cursor-pointer border-2 border-solid border-black border-collapse px-5 py-2 w-full my-2"}
-                    complete={String(task.complete)}
-                    id={task.id}
-                    hover={String(task.hover)}
-                    onClick={() => handleCompleteTask(task.id)}
-                  >
-                    <p
-                      className={
-                        task.complete
-                          ? "capitalize text-gray-300 duration-500 line-through text-left"
-                          : "capitalize text-gray-600 duration-500 text-left"
-                      }
+            <DragDropContext>
+              {todoList.map((task, index) => {
+                return (
+                  <div className="flex items-center">
+                    <div
+                      className={task.deleted ? 'hidden' :"flex justify-between items-center cursor-pointer border-2 border-solid border-black border-collapse px-5 py-2 w-full my-2"}
+                      complete={String(task.complete)}
+                      id={task.id}
+                      onClick={() => handleCompleteTask(task.id)}
+                      onDragStart={(e) => dragStart(e, index)}
+                      onDragEnter={(e) => dragEnter(e, index)}
+                      onDragEnd={drop}
+                      draggable
                     >
-                      {task.task}
-                    </p>
-                    <p
-                      className={
-                        task.complete
-                          ? "capitalize text-black opacity-100 duration-500 font-semibold"
-                          : "duration-500 opacity-0 capitalize font-semibold"
-                      }
-                    >
-                      Completed
-                    </p>
-                  </div>
-                  <div className="">
+                      <p
+                        className={
+                          task.complete
+                            ? "capitalize text-gray-300 duration-500 line-through text-left"
+                            : "capitalize text-gray-600 duration-500 text-left"
+                        }
+                      >
+                        {task.task}
+                      </p>
+                      <p
+                        className={
+                          task.complete
+                            ? "capitalize text-black opacity-100 duration-500 font-semibold"
+                            : "duration-500 opacity-0 capitalize font-semibold"
+                        }
+                      >
+                        Completed
+                      </p>
+                    </div>
                     <img
                       className={
                         task.trashNear ? "animate__infinite animate__heartBeat cursor-pointer duration-500 w-10" : "animate-none cursor-pointer duration-500 w-10"
@@ -176,9 +202,9 @@ function TODO_LIST() {
                       onClick={() => handleDelete(task.id)}
                     />
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </DragDropContext>
           </div>
         </div>
       </div>
@@ -186,3 +212,66 @@ function TODO_LIST() {
   );
 }
 export default TODO_LIST;
+
+/*
+            <DragDropContext>
+              <Droppable droppableId="taks">
+                {(provided) => (
+                  <div {...provided.droppableProps} ref={provided.innerRef}>
+                    {todoList.map((task, index) => {
+                      return (
+                        <Draggable key={task.id} draggableId={task.id.toString()} index={index}>
+                          {(provided) => (
+                            <section className="flex items-center" {...provided.dragHandleProps} {...provided.draggableProps} ref={provided.innerRef}>
+                              <div
+                                className={task.deleted ? 'hidden' :"flex justify-between items-center border-2 border-solid border-black border-collapse px-5 py-2 w-full my-2"}
+                                complete={String(task.complete)}
+                                onClick={() => handleCompleteTask(task.id)}
+                                //onDragStart={(e) => dragStart(e, index)}
+                                //onDragEnter={(e) => dragEnter(e, index)}
+                                //onDragEnd={drop}
+                                //draggable
+                              >
+                                <p
+                                  className={
+                                    task.complete
+                                      ? "capitalize text-gray-300 duration-500 line-through text-left"
+                                      : "capitalize text-gray-600 duration-500 text-left"
+                                  }
+                                >
+                                  {task.task}
+                                </p>
+                                <p
+                                  className={
+                                    task.complete
+                                      ? "capitalize text-black opacity-100 duration-500 font-semibold"
+                                      : "duration-500 opacity-0 capitalize font-semibold"
+                                  }
+                                >
+                                  Completed
+                                </p>
+                              </div>
+                              <img
+                                className={
+                                  task.trashNear ? "animate__infinite animate__heartBeat cursor-pointer duration-500 w-10" : "animate-none cursor-pointer duration-500 w-10"
+                                }
+                                style= {
+                                  {'display': task.deleted ? 'none' : 'block'}
+                                }
+                                src={trashCan}
+                                alt="trashCan"
+                                onMouseEnter={() => handleDistance(task.id)}
+                                onMouseLeave={() => handleDistance(task.id)}
+                                onClick={() => handleDelete(task.id)}
+                              />
+                            </section>
+                          )}
+                        </Draggable>
+                      );
+                    })}
+                    {provided.placeholder}
+                </div>
+                )}
+              </Droppable>
+            </DragDropContext>
+*/ 
