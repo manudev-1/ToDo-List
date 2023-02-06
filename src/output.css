@@ -561,6 +561,18 @@ video {
   --tw-backdrop-sepia:  ;
 }
 
+.absolute{
+  position: absolute;
+}
+
+.relative{
+  position: relative;
+}
+
+.right-0{
+  right: 0px;
+}
+
 .m-5{
   margin: 1.25rem;
 }
@@ -568,6 +580,11 @@ video {
 .my-2{
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
+}
+
+.my-24{
+  margin-top: 6rem;
+  margin-bottom: 6rem;
 }
 
 .block{
@@ -612,6 +629,32 @@ video {
 
 .w-10{
   width: 2.5rem;
+}
+
+.w-2\/6{
+  width: 33.333333%;
+}
+
+.w-3\/6{
+  width: 50%;
+}
+
+.w-fit{
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
+.w-96{
+  width: 24rem;
+}
+
+.w-11{
+  width: 2.75rem;
+}
+
+.min-w-full{
+  min-width: 100%;
 }
 
 .border-collapse{
