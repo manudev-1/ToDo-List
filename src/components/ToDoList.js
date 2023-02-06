@@ -130,13 +130,13 @@ function TODO_LIST() {
         <h1 className="stroke font-bold text-9xl my-24">ToDo-List</h1>
       </div>
       <div className="flex flex-col items-center">
-        <div className="w-1/6 flex">
+        <div className="w-1/3 flex">
           <input
             type="text"
             className={
               inputFocus
-                ? "outline-none border-none h-10 w-5/6 rounded-lg p-2 duration-500 capitalize filter drop-shadow-glowing placeholder:text-gray-200 bg-black text-gray-200"
-                : "outline-none border-none h-10 w-5/6 rounded-lg p-2 duration-500 capitalize placeholder:text-gray-200 bg-black text-gray-200"
+                ? "outline-none border-none h-10 w-11/12 rounded-lg p-2 duration-500 capitalize filter drop-shadow-glowing placeholder:text-gray-200 bg-black text-gray-200"
+                : "outline-none border-none h-10 w-11/12 rounded-lg p-2 duration-500 capitalize placeholder:text-gray-200 bg-black text-gray-200"
             }
             placeholder="What will you do?"
             maxLength={35}
