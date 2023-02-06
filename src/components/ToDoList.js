@@ -120,8 +120,7 @@ function TODO_LIST() {
 
   // * Dragged or Not
   const handleDrag = () => {
-    if(todoList.length > 1)
-      setDragged(true);
+    if (todoList.length > 1) setDragged(true);
   };
 
   return (
@@ -163,7 +162,15 @@ function TODO_LIST() {
           <DragDropContext onDragEnd={handleOnDragEnd} onDragStart={handleDrag}>
             <Droppable droppableId="taks">
               {(provided) => (
-                <section {...provided.droppableProps} ref={provided.innerRef} className={isDragged ? 'w-full opacity-50 duration-500' : 'w-full duration-500'}>
+                <section
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                  className={
+                    isDragged
+                      ? "w-full opacity-50 duration-500"
+                      : "w-full duration-500"
+                  }
+                >
                   {todoList.map((task, index) => {
                     return (
                       <Draggable
@@ -183,7 +190,9 @@ function TODO_LIST() {
                               {...provided.dragHandleProps}
                               onDrag={handleDrag}
                               className="w-5 m-2 duration-500"
-                              style={{display: task.deleted ? 'none' : 'block'}}
+                              style={{
+                                display: task.deleted ? "none" : "block",
+                              }}
                             />
                             <div
                               className={
