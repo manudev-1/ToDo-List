@@ -18,7 +18,15 @@ Code Style: `Standard` by [Prettier](https://prettier.io/)
 
 ### Screen Shot and Video:
 
-![image](https://user-images.githubusercontent.com/83871565/216817886-f6138651-f0ab-4bfd-9685-e7bd3bfb84b2.png)
+Main Site View:
+
+![image](https://user-images.githubusercontent.com/83871565/217081282-91555d29-c4b6-46b4-a218-22600dbedb45.png)
+
+Video Function:
+
+
+https://user-images.githubusercontent.com/83871565/217088670-d2b0b161-633c-4e82-8c7d-c13fe12c4ed6.mov
+
 
 ### Tech / FrameWork:
 
@@ -104,6 +112,25 @@ Delete Task:
       return item
     });
     setTodoList(list)
+  };
+```
+
+Drag Memory Function:
+
+```
+  const handleOnDragEnd = (result) => {
+    if (!result.destination) return;
+    const list = Array.from(todoList);
+    const [reorderedTask] = list.splice(result.source.index, 1);
+    list.splice(result.destination.index, 0, reorderedTask);
+
+    setDragged(false);
+    setTodoList(list);
+  };
+
+  const handleDrag = () => {
+    if(todoList.length > 1)
+      setDragged(true);
   };
 ```
 
