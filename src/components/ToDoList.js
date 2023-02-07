@@ -164,7 +164,19 @@ function TODO_LIST() {
       return item;
     });
     setTodoList(list)
+    setHowDeleted(howDeleted-1)
   }
+
+  /*
+  const disableScroll = () => {
+    var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+    console.log(scrollTop)
+    console.log(scrollLeft)
+
+    window.scrollTo(scrollLeft, scrollTop);
+  }
+  */
 
   return (
     <div className="ToDo_List font-lato">
@@ -297,14 +309,14 @@ function TODO_LIST() {
         <div className={howDeleted > 0 ? "absolute bg-gray-500 w-4 h-4 rounded-full right-0 z-10 opacity-100 duration-500" : 'duration-500 opacity-0'}></div>
         <img src={trashCan} alt="" className={howDeleted > 0 ? 'relative w-14 p-2 z-0 opacity-100 duration-500' : 'duration-500 opacity-0'}/>
       </div>
-      <div className={deletedMenu ? "absolute bg-black w-1/6 h-full translate-x-0 top-0 text-white duration-500" : 'absolute -left-56 duration-500'}>
+      <div className={deletedMenu ? "transition absolute bg-black w-1/6 h-full translate-x-0 top-0 text-white duration-500 z-10 overflow-y-scroll" : 'transition absolute -translate-x-full w-1/6 h-full top-0 duration-500'}>
         <div className="m-4">
           <div className="flex justify-between items-center">
             <h1 className="font-bold text-xl">Deleted Tasks</h1>
             <img src={close} alt="" className="w-5 cursor-pointer" onClick={handleMenu}/>
           </div>
           <hr />
-          {todoList.map((task, index) => {
+          {todoList.map(task => {
             if(task.deleted){
               return(
                 <div className="">
@@ -314,11 +326,12 @@ function TODO_LIST() {
                   </div>
                   <hr />
                 </div>
-              )
+              );
             }
           })}
         </div>
       </div>
+      <div className={deletedMenu ? 'absolute w-full h-full bg-opacH inset-0 z-0 duration-500 opacity-100' : 'opacity-0 pointer-events-none duration-500'} onClick={handleMenu}></div>
     </div>
   );
 }

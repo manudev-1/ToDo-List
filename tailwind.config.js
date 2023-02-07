@@ -6,7 +6,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'opac': 'rgba(0, 0, 0, 0.25)'
+        'opac': 'rgba(0, 0, 0, 0.25)',
+        'opacH': 'rgba(0, 0, 0, 0.5)'
       },
       fontFamily: {
         'lato': ['Lato', 'sans-serif']
