@@ -91,10 +91,21 @@ function TODO_LIST() {
   };
 
   // * Manage Near to TrashCan Icon
-  const handleDistance = (id) => {
+  const handleEnterTrash = (id) => {
     let list = todoList.map((task) => {
       let item = {};
-      if (task.id === id) item = { ...task, trashNear: !task.trashNear };
+      if (task.id === id) item = { ...task, trashNear: true };
+      else item = { ...task };
+      return item;
+    });
+    setTodoList(list);
+  };
+
+  // * Manage Near to TrashCan Icon
+  const handleLeaveTrash = (id) => {
+    let list = todoList.map((task) => {
+      let item = {};
+      if (task.id === id) item = { ...task, trashNear: false };
       else item = { ...task };
       return item;
     });
@@ -120,7 +131,7 @@ function TODO_LIST() {
     const [reorderedTask] = list.splice(result.source.index, 1);
     list.splice(result.destination.index, 0, reorderedTask);
 
-    setDragged(false);
+    if (todoList.length > 1) setDragged(false);
     setTodoList(list);
   };
 
@@ -223,7 +234,7 @@ function TODO_LIST() {
                   className={
                     isDragged
                       ? "w-full opacity-50 duration-500"
-                      : "w-full duration-500"
+                      : "w-full duration-100"
                   }
                 >
                   {todoList.map((task, index) => {
@@ -235,7 +246,7 @@ function TODO_LIST() {
                       >
                         {(provided) => (
                           <section
-                            className="w-full flex justify-center"
+                            className={task.deleted ? 'w-full flex justify-center m-0' : 'w-full flex justify-center m-1'}
                             {...provided.draggableProps}
                             ref={provided.innerRef}
                           >
@@ -252,7 +263,7 @@ function TODO_LIST() {
                             <div
                               className={
                                 task.deleted
-                                  ? "hidden"
+                                  ? "hidden my-0"
                                   : "flex justify-between items-center border-2 border-solid border-black px-5 py-2 my-2 w-full cursor-pointer "
                               }
                               complete={String(task.complete)}
@@ -280,16 +291,16 @@ function TODO_LIST() {
                             <img
                               className={
                                 task.trashNear
-                                  ? "cursor-pointer duration-500 w-10"
-                                  : "cursor-pointer duration-500 w-10"
+                                  ? "cursor-pointer duration-100 w-14"
+                                  : "cursor-pointer duration-100 w-10"
                               }
                               style={{
                                 display: task.deleted ? "none" : "block",
                               }}
                               src={trashCan}
                               alt="trashCan"
-                              onMouseEnter={() => handleDistance(task.id)}
-                              onMouseLeave={() => handleDistance(task.id)}
+                              onMouseEnter={() => handleEnterTrash(task.id)}
+                              onMouseLeave={() => handleLeaveTrash(task.id)}
                               onClick={() => handleDelete(task.id)}
                             />
                           </section>
@@ -309,7 +320,7 @@ function TODO_LIST() {
         <div className={howDeleted > 0 ? "absolute bg-gray-500 w-4 h-4 rounded-full right-0 z-10 opacity-100 duration-500" : 'duration-500 opacity-0'}></div>
         <img src={trashCan} alt="" className={howDeleted > 0 ? 'relative w-14 p-2 z-0 opacity-100 duration-500' : 'duration-500 opacity-0'}/>
       </div>
-      <div className={deletedMenu ? "transition absolute bg-black w-1/6 h-full translate-x-0 top-0 text-white duration-500 z-10 overflow-y-scroll" : 'transition absolute -translate-x-full w-1/6 h-full top-0 duration-500'}>
+      <div className={deletedMenu ? "transition absolute bg-black w-1/6 h-full translate-x-0 top-0 text-white duration-500 z-10 overflow-y-scroll scrollbar scrollbar-thumb-gray-200 hover:scrollbar-thumb-gray-700 scrollbar-w-2 scrollbar-thumb-rounded-full scrollbar-track-gray-400" : 'transition absolute -translate-x-full w-1/6 h-full top-0 duration-500'}>
         <div className="m-4">
           <div className="flex justify-between items-center">
             <h1 className="font-bold text-xl">Deleted Tasks</h1>
@@ -319,7 +330,7 @@ function TODO_LIST() {
           {todoList.map(task => {
             if(task.deleted){
               return(
-                <div className="">
+                <div className="m-4">
                   <div className="flex justify-between my-5">
                     <p className="capitalize w-5/6 overflow-hidden text-left">{task.task}</p>
                     <img src={undo} alt="" className={task.hoverUndo ? "w-5 cursor-pointer animate-spin" : 'w-5 cursor-pointer'} onClick={() => handleUndo(task.id)} onMouseEnter={() => hoverUndoEnter(task.id)} onMouseLeave={() => hoverUndoLeave(task.id)}/>

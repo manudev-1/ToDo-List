@@ -34,6 +34,6 @@ module.exports = {
     }
   },
   plugins: [
-    require('tailwindcss-animatecss')
+    require('tailwind-scrollbar')({ nocompatible: true }),
   ],
 }
