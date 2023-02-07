@@ -36,7 +36,7 @@ For this App I am using:
   - [React Router Dom@6](https://reactrouter.com/en/main)
   - [React Beautiful DnD - Drag and Drop](https://www.npmjs.com/package/react-beautiful-dnd)
 - [Tailwind CSS](https://tailwindcss.com/)
-  - [TailwindCss - animatecss](https://www.npmjs.com/package/tailwindcss-animatecss?activeTab=readme)
+  - [TailwindCss - scrollbar](https://www.npmjs.com/package/tailwind-scrollbar)
 
 
 ### Code Examples
