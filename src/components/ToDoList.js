@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import "../App.css";
-import trashCan from "../assets/trash-can.svg";
-import drag from "../assets/drag.svg";
+import trashCan from '../assets/trash-can.svg';
+import drag from '../assets/drag.svg';
+import close from '../assets/close.svg'
+import undo from '../assets/undo.svg'
 
 function TODO_LIST() {
   // ! Input Edit
@@ -35,6 +37,7 @@ function TODO_LIST() {
   const [input, setInput] = useState("");
   const [todoList, setTodoList] = useState([]);
   const [isDragged, setDragged] = useState(false);
+  const [howDeleted, setHowDeleted] = useState(0)
 
   // * Input from btn
   const handleInputData = () => {
@@ -48,6 +51,7 @@ function TODO_LIST() {
           complete: false,
           trashNear: false,
           deleted: false,
+          hoverUndo: false
         },
       ]);
       setInput("");
@@ -67,6 +71,7 @@ function TODO_LIST() {
             complete: false,
             trashNear: false,
             deleted: false,
+            hoverUndo: false
           },
         ]);
         setInput("");
@@ -105,6 +110,7 @@ function TODO_LIST() {
       return item;
     });
     setTodoList(list);
+    setHowDeleted(howDeleted+1)
   };
 
   // * Drag Memory Function
@@ -123,6 +129,43 @@ function TODO_LIST() {
     if (todoList.length > 1) setDragged(true);
   };
 
+  // ! Menu of Deleted
+  const [deletedMenu, setDeletedMenu] = useState(false)
+
+  const handleMenu = () => {
+    setDeletedMenu(!deletedMenu)
+  }
+
+  const hoverUndoEnter = (id) => {
+    let list = todoList.map((task) => {
+      let item = {};
+      if (task.id === id) item = { ...task, hoverUndo: true };
+      else item = { ...task };
+      return item;
+    });
+    setTodoList(list)
+  }
+
+  const hoverUndoLeave = (id) => {
+    let list = todoList.map((task) => {
+      let item = {};
+      if (task.id === id) item = { ...task, hoverUndo: false };
+      else item = { ...task };
+      return item;
+    });
+    setTodoList(list)
+  }
+
+  const handleUndo = (id) => {
+    let list = todoList.map((task) => {
+      let item = {};
+      if (task.id === id) item = { ...task, deleted: false };
+      else item = { ...task };
+      return item;
+    });
+    setTodoList(list)
+  }
+
   return (
     <div className="ToDo_List font-lato">
       <div className="w-full h-1/2 flex justify-center items-center">
@@ -134,7 +177,7 @@ function TODO_LIST() {
             type="text"
             className={
               inputFocus
-                ? "outline-none border-none h-10 w-11/12 rounded-lg p-2 duration-500 capitalize filter drop-shadow-glowing placeholder:text-gray-200 bg-black text-gray-200"
+                ? "outline-none border-none h-10 w-11/12 rounded-lg p-2 duration-500 capitalize filter drop-shadow-shaded placeholder:text-gray-200 bg-black text-gray-200"
                 : "outline-none border-none h-10 w-11/12 rounded-lg p-2 duration-500 capitalize placeholder:text-gray-200 bg-black text-gray-200"
             }
             placeholder="What will you do?"
@@ -150,7 +193,7 @@ function TODO_LIST() {
           <button
             className={
               inputFocus
-                ? "w-1/6 bg-black rounded-lg text-gray-200 filter drop-shadow-glowing duration-500"
+                ? "w-1/6 bg-black rounded-lg text-gray-200 filter drop-shadow-shaded duration-500"
                 : "w-1/6 duration-500 bg-black rounded-lg text-gray-200"
             }
             onClick={() => handleInputData()}
@@ -225,8 +268,8 @@ function TODO_LIST() {
                             <img
                               className={
                                 task.trashNear
-                                  ? "animate__infinite animate__heartBeat cursor-pointer duration-500 w-10"
-                                  : "animate-none cursor-pointer duration-500 w-10"
+                                  ? "cursor-pointer duration-500 w-10"
+                                  : "cursor-pointer duration-500 w-10"
                               }
                               style={{
                                 display: task.deleted ? "none" : "block",
@@ -247,6 +290,33 @@ function TODO_LIST() {
               )}
             </Droppable>
           </DragDropContext>
+        </div>
+      </div>
+      <div className={howDeleted > 0 ? "absolute inset-0 w-fit h-fit m-2 rounded-full filter drop-shadow-glowing border-2 border-black cursor-pointer" : 'w-fit h-fit'} onClick={handleMenu}>
+        <div className= {howDeleted > 0 ? "absolute bg-gray-500 w-4 h-4 rounded-full right-0 z-10 animate-ping opacity-100 duration-500" : 'duration-500 opacity-0'}></div>
+        <div className={howDeleted > 0 ? "absolute bg-gray-500 w-4 h-4 rounded-full right-0 z-10 opacity-100 duration-500" : 'duration-500 opacity-0'}></div>
+        <img src={trashCan} alt="" className={howDeleted > 0 ? 'relative w-14 p-2 z-0 opacity-100 duration-500' : 'duration-500 opacity-0'}/>
+      </div>
+      <div className={deletedMenu ? "absolute bg-black w-1/6 h-full translate-x-0 top-0 text-white duration-500" : 'absolute -left-56 duration-500'}>
+        <div className="m-4">
+          <div className="flex justify-between items-center">
+            <h1 className="font-bold text-xl">Deleted Tasks</h1>
+            <img src={close} alt="" className="w-5 cursor-pointer" onClick={handleMenu}/>
+          </div>
+          <hr />
+          {todoList.map((task, index) => {
+            if(task.deleted){
+              return(
+                <div className="">
+                  <div className="flex justify-between my-5">
+                    <p className="capitalize w-5/6 overflow-hidden text-left">{task.task}</p>
+                    <img src={undo} alt="" className={task.hoverUndo ? "w-5 cursor-pointer animate-spin" : 'w-5 cursor-pointer'} onClick={() => handleUndo(task.id)} onMouseEnter={() => hoverUndoEnter(task.id)} onMouseLeave={() => hoverUndoLeave(task.id)}/>
+                  </div>
+                  <hr />
+                </div>
+              )
+            }
+          })}
         </div>
       </div>
     </div>
