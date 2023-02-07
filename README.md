@@ -48,9 +48,9 @@ We take the Task from the input:
   const [input, setInput] = useState("");
   const [todoList, setTodoList] = useState([]);
   
-  // FROM Button
-  const handleInputData = (e) => {
-    if (input != "") {
+   // * Input from btn
+  const handleInputData = () => {
+    if (input !== "") {
       const id = todoList.length + 1;
       setTodoList((prev) => [
         ...prev,
@@ -58,14 +58,16 @@ We take the Task from the input:
           id: id,
           task: input,
           complete: false,
-          deleted: false
+          trashNear: false,
+          deleted: false,
+          hoverUndo: false
         },
       ]);
       setInput("");
     }
   };
-  
-  // FROM KeyBoard
+
+  // * Input from KB
   const handleInputDataKB = (e) => {
     if (e.key === "Enter")
       if (input !== "") {
@@ -77,6 +79,8 @@ We take the Task from the input:
             task: input,
             complete: false,
             trashNear: false,
+            deleted: false,
+            hoverUndo: false
           },
         ]);
         setInput("");
@@ -132,6 +136,20 @@ Drag Memory Function:
     if(todoList.length > 1)
       setDragged(true);
   };
+```
+
+Restore delited items via a menu:
+
+```
+  const handleUndo = (id) => {
+    let list = todoList.map((task) => {
+      let item = {};
+      if (task.id === id) item = { ...task, deleted: false };
+      else item = { ...task };
+      return item;
+    });
+    setTodoList(list)
+  }
 ```
 
 ### How To Use It?
