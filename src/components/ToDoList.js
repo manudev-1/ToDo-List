@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import AOS from "aos";
+import 'aos/dist/aos.css'
 import "../App.css";
 import trashCan from '../assets/trash-can.svg';
 import drag from '../assets/drag.svg';
@@ -7,6 +9,11 @@ import close from '../assets/close.svg'
 import undo from '../assets/undo.svg'
 
 function TODO_LIST() {
+  // ! Init AOS
+  useEffect(() => {
+    AOS.init()
+  }, [])
+
   // ! Input Edit
   // * Focus Var
   const [inputFocus, setInputFocus] = useState(false);
@@ -184,10 +191,10 @@ function TODO_LIST() {
 
   return (
     <div className="ToDo_List font-lato">
-      <div className="w-full h-1/2 flex justify-center items-center">
+      <div className="w-full h-1/2 flex justify-center items-center" data-aos-duration='600' data-aos='zoom-in-down'>
         <h1 className="stroke font-bold xl:text-9xl text-5xl my-24">ToDo-List</h1>
       </div>
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center" data-aos-duration='600' data-aos='zoom-in-down' data-aos-delay='250'>
         <div className="xl:w-1/3 flex w-5/6 justify-center">
           <input
             type="text"
