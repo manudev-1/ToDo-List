@@ -37,6 +37,7 @@ For this App I am using:
   - [React Beautiful DnD - Drag and Drop](https://www.npmjs.com/package/react-beautiful-dnd)
 - [Tailwind CSS](https://tailwindcss.com/)
   - [TailwindCss - scrollbar](https://www.npmjs.com/package/tailwind-scrollbar)
+. [AOS](https://www.npmjs.com/package/aos)
 
 
 ### Code Examples
