@@ -131,7 +131,6 @@ function TODO_LIST() {
     });
     setTodoList(list);
     setHowDeleted(howDeleted + 1);
-    console.log(howDeleted);
   };
 
   // * Drag Memory Function
@@ -186,7 +185,6 @@ function TODO_LIST() {
     });
     setTodoList(list);
     setHowDeleted(howDeleted - 1);
-    console.log(howDeleted);
   };
 
   return (
@@ -260,7 +258,7 @@ function TODO_LIST() {
                             className={
                               task.deleted
                                 ? "w-full flex justify-center m-0"
-                                : "w-full flex justify-center m-1"
+                                : "w-full flex justify-center m-2"
                             }
                             {...provided.draggableProps}
                             ref={provided.innerRef}
@@ -362,10 +360,11 @@ function TODO_LIST() {
           }
         />
       </div>
+      <div className={deletedMenu ? "absolute w-full h-full inset-0" : 'pointer-events-none'}>
       <div
         className={
           deletedMenu
-            ? "transition absolute bg-black xl:w-1/6 w-5/6 h-full translate-x-0 top-0 text-white duration-500 z-10 overflow-y-scroll scrollbar scrollbar-thumb-gray-200 hover:scrollbar-thumb-gray-700 scrollbar-w-2 scrollbar-thumb-rounded-full scrollbar-track-gray-400"
+            ? "transition fixed bg-black xl:w-1/6 w-5/6 h-full translate-x-0 top-0 text-white duration-500 z-10 overflow-y-scroll scrollbar scrollbar-thumb-gray-200 hover:scrollbar-thumb-gray-700 scrollbar-w-2 scrollbar-thumb-rounded-full scrollbar-track-gray-400"
             : "transition absolute -translate-x-full xl:w-1/6 w-5/6 h-full top-0 duration-500"
         }
       >
@@ -385,9 +384,11 @@ function TODO_LIST() {
               return (
                 <div className="m-4">
                   <div className="flex justify-between my-5">
-                    <p className="capitalize w-5/6 overflow-hidden text-left">
-                      {howDeleted > 0 ? `${task.task}` : `Empty Trash!`}
-                    </p>
+                  {
+                    howDeleted > 0 
+                    ? <p className="capitalize w-5/6 overflow-hidden text-left">{task.task}</p>
+                    : <p className="capitalize w-5/6 overflow-hidden text-left">Empty Trash!</p>
+                  }
                     <img
                       src={undo}
                       alt=""
@@ -408,14 +409,15 @@ function TODO_LIST() {
           })}
         </div>
       </div>
-      <div
-        className={
-          deletedMenu
-            ? "absolute w-full h-full bg-opacH inset-0 z-0 duration-500 opacity-100"
-            : "opacity-0 pointer-events-none duration-500"
-        }
-        onClick={handleMenu}
-      ></div>
+        <div
+          className={
+            deletedMenu
+              ? "fixed w-full h-full bg-opacH inset-0 z-0 duration-500 opacity-100"
+              : "opacity-0 pointer-events-none duration-500"
+          }
+          onClick={handleMenu}
+        ></div>
+      </div>
     </div>
   );
 }
