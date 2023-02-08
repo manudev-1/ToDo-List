@@ -51,7 +51,8 @@ function TODO_LIST() {
           complete: false,
           trashNear: false,
           deleted: false,
-          hoverUndo: false
+          hoverUndo: false,
+          read: false
         },
       ]);
       setInput("");
@@ -71,7 +72,8 @@ function TODO_LIST() {
             complete: false,
             trashNear: false,
             deleted: false,
-            hoverUndo: false
+            hoverUndo: false,
+            read: false
           },
         ]);
         setInput("");
@@ -122,6 +124,7 @@ function TODO_LIST() {
     });
     setTodoList(list);
     setHowDeleted(howDeleted+1)
+    console.log(howDeleted)
   };
 
   // * Drag Memory Function
@@ -176,32 +179,22 @@ function TODO_LIST() {
     });
     setTodoList(list)
     setHowDeleted(howDeleted-1)
+    console.log(howDeleted)
   }
-
-  /*
-  const disableScroll = () => {
-    var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-    console.log(scrollTop)
-    console.log(scrollLeft)
-
-    window.scrollTo(scrollLeft, scrollTop);
-  }
-  */
 
   return (
     <div className="ToDo_List font-lato">
       <div className="w-full h-1/2 flex justify-center items-center">
-        <h1 className="stroke font-bold text-9xl my-24">ToDo-List</h1>
+        <h1 className="stroke font-bold xl:text-9xl text-5xl my-24">ToDo-List</h1>
       </div>
       <div className="flex flex-col items-center">
-        <div className="w-1/3 flex">
+        <div className="xl:w-1/3 flex w-5/6 justify-center">
           <input
             type="text"
             className={
               inputFocus
-                ? "outline-none border-none h-10 w-11/12 rounded-lg p-2 duration-500 capitalize filter drop-shadow-shaded placeholder:text-gray-200 bg-black text-gray-200"
-                : "outline-none border-none h-10 w-11/12 rounded-lg p-2 duration-500 capitalize placeholder:text-gray-200 bg-black text-gray-200"
+                ? "outline-none border-none h-10 xl:w-11/12 w-5/6 rounded-lg p-2 duration-500 capitalize filter drop-shadow-shaded placeholder:text-gray-200 bg-black text-gray-200"
+                : "outline-none border-none h-10 xl:w-11/12 w-5/6 rounded-lg p-2 duration-500 capitalize placeholder:text-gray-200 bg-black text-gray-200"
             }
             placeholder="What will you do?"
             maxLength={35}
@@ -224,7 +217,7 @@ function TODO_LIST() {
             Add
           </button>
         </div>
-        <div className="w-2/6 m-5 text-gray-600">
+        <div className="xl:w-2/6 w-5/6 m-5 text-gray-600">
           <DragDropContext onDragEnd={handleOnDragEnd} onDragStart={handleDrag}>
             <Droppable droppableId="taks">
               {(provided) => (
@@ -320,7 +313,7 @@ function TODO_LIST() {
         <div className={howDeleted > 0 ? "absolute bg-gray-500 w-4 h-4 rounded-full right-0 z-10 opacity-100 duration-500" : 'duration-500 opacity-0'}></div>
         <img src={trashCan} alt="" className={howDeleted > 0 ? 'relative w-14 p-2 z-0 opacity-100 duration-500' : 'duration-500 opacity-0'}/>
       </div>
-      <div className={deletedMenu ? "transition absolute bg-black w-1/6 h-full translate-x-0 top-0 text-white duration-500 z-10 overflow-y-scroll scrollbar scrollbar-thumb-gray-200 hover:scrollbar-thumb-gray-700 scrollbar-w-2 scrollbar-thumb-rounded-full scrollbar-track-gray-400" : 'transition absolute -translate-x-full w-1/6 h-full top-0 duration-500'}>
+      <div className={deletedMenu ? "transition absolute bg-black xl:w-1/6 w-5/6 h-full translate-x-0 top-0 text-white duration-500 z-10 overflow-y-scroll scrollbar scrollbar-thumb-gray-200 hover:scrollbar-thumb-gray-700 scrollbar-w-2 scrollbar-thumb-rounded-full scrollbar-track-gray-400" : 'transition absolute -translate-x-full xl:w-1/6 w-5/6 h-full top-0 duration-500'}>
         <div className="m-4">
           <div className="flex justify-between items-center">
             <h1 className="font-bold text-xl">Deleted Tasks</h1>
@@ -328,18 +321,17 @@ function TODO_LIST() {
           </div>
           <hr />
           {todoList.map(task => {
-            if(task.deleted){
+            if(task.deleted)
               return(
                 <div className="m-4">
                   <div className="flex justify-between my-5">
-                    <p className="capitalize w-5/6 overflow-hidden text-left">{task.task}</p>
+                    <p className="capitalize w-5/6 overflow-hidden text-left">{howDeleted > 0 ? `${task.task}` : `Empty Trash!`}</p>
                     <img src={undo} alt="" className={task.hoverUndo ? "w-5 cursor-pointer animate-spin" : 'w-5 cursor-pointer'} onClick={() => handleUndo(task.id)} onMouseEnter={() => hoverUndoEnter(task.id)} onMouseLeave={() => hoverUndoLeave(task.id)}/>
                   </div>
                   <hr />
                 </div>
               );
-            }
-          })}
+            })}
         </div>
       </div>
       <div className={deletedMenu ? 'absolute w-full h-full bg-opacH inset-0 z-0 duration-500 opacity-100' : 'opacity-0 pointer-events-none duration-500'} onClick={handleMenu}></div>
