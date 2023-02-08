@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import AOS from "aos";
-import 'aos/dist/aos.css'
+import "aos/dist/aos.css";
 import "../App.css";
-import trashCan from '../assets/trash-can.svg';
-import drag from '../assets/drag.svg';
-import close from '../assets/close.svg'
-import undo from '../assets/undo.svg'
+import trashCan from "../assets/trash-can.svg";
+import drag from "../assets/drag.svg";
+import close from "../assets/close.svg";
+import undo from "../assets/undo.svg";
 
 function TODO_LIST() {
   // ! Init AOS
   useEffect(() => {
-    AOS.init()
-  }, [])
+    AOS.init();
+  }, []);
 
   // ! Input Edit
   // * Focus Var
@@ -44,7 +44,7 @@ function TODO_LIST() {
   const [input, setInput] = useState("");
   const [todoList, setTodoList] = useState([]);
   const [isDragged, setDragged] = useState(false);
-  const [howDeleted, setHowDeleted] = useState(0)
+  const [howDeleted, setHowDeleted] = useState(0);
 
   // * Input from btn
   const handleInputData = () => {
@@ -59,7 +59,7 @@ function TODO_LIST() {
           trashNear: false,
           deleted: false,
           hoverUndo: false,
-          read: false
+          read: false,
         },
       ]);
       setInput("");
@@ -80,7 +80,7 @@ function TODO_LIST() {
             trashNear: false,
             deleted: false,
             hoverUndo: false,
-            read: false
+            read: false,
           },
         ]);
         setInput("");
@@ -130,8 +130,8 @@ function TODO_LIST() {
       return item;
     });
     setTodoList(list);
-    setHowDeleted(howDeleted+1)
-    console.log(howDeleted)
+    setHowDeleted(howDeleted + 1);
+    console.log(howDeleted);
   };
 
   // * Drag Memory Function
@@ -151,11 +151,11 @@ function TODO_LIST() {
   };
 
   // ! Menu of Deleted
-  const [deletedMenu, setDeletedMenu] = useState(false)
+  const [deletedMenu, setDeletedMenu] = useState(false);
 
   const handleMenu = () => {
-    setDeletedMenu(!deletedMenu)
-  }
+    setDeletedMenu(!deletedMenu);
+  };
 
   const hoverUndoEnter = (id) => {
     let list = todoList.map((task) => {
@@ -164,8 +164,8 @@ function TODO_LIST() {
       else item = { ...task };
       return item;
     });
-    setTodoList(list)
-  }
+    setTodoList(list);
+  };
 
   const hoverUndoLeave = (id) => {
     let list = todoList.map((task) => {
@@ -174,8 +174,8 @@ function TODO_LIST() {
       else item = { ...task };
       return item;
     });
-    setTodoList(list)
-  }
+    setTodoList(list);
+  };
 
   const handleUndo = (id) => {
     let list = todoList.map((task) => {
@@ -184,17 +184,28 @@ function TODO_LIST() {
       else item = { ...task };
       return item;
     });
-    setTodoList(list)
-    setHowDeleted(howDeleted-1)
-    console.log(howDeleted)
-  }
+    setTodoList(list);
+    setHowDeleted(howDeleted - 1);
+    console.log(howDeleted);
+  };
 
   return (
     <div className="ToDo_List font-lato">
-      <div className="w-full h-1/2 flex justify-center items-center" data-aos-duration='600' data-aos='zoom-in-down'>
-        <h1 className="stroke font-bold xl:text-9xl text-5xl my-24">ToDo-List</h1>
+      <div
+        className="w-full h-1/2 flex justify-center items-center"
+        data-aos-duration="600"
+        data-aos="zoom-in-down"
+      >
+        <h1 className="stroke font-bold xl:text-9xl text-5xl my-24">
+          ToDo-List
+        </h1>
       </div>
-      <div className="flex flex-col items-center" data-aos-duration='600' data-aos='zoom-in-down' data-aos-delay='250'>
+      <div
+        className="flex flex-col items-center"
+        data-aos-duration="600"
+        data-aos="zoom-in-down"
+        data-aos-delay="250"
+      >
         <div className="xl:w-1/3 flex w-5/6 justify-center">
           <input
             type="text"
@@ -246,7 +257,11 @@ function TODO_LIST() {
                       >
                         {(provided) => (
                           <section
-                            className={task.deleted ? 'w-full flex justify-center m-0' : 'w-full flex justify-center m-1'}
+                            className={
+                              task.deleted
+                                ? "w-full flex justify-center m-0"
+                                : "w-full flex justify-center m-1"
+                            }
                             {...provided.draggableProps}
                             ref={provided.innerRef}
                           >
@@ -315,37 +330,92 @@ function TODO_LIST() {
           </DragDropContext>
         </div>
       </div>
-      <div className={howDeleted > 0 ? "absolute inset-0 w-fit h-fit m-2 rounded-full filter drop-shadow-glowing border-2 border-black cursor-pointer" : 'w-fit h-fit'} onClick={handleMenu}>
-        <div className= {howDeleted > 0 ? "absolute bg-gray-500 w-4 h-4 rounded-full right-0 z-10 animate-ping opacity-100 duration-500" : 'duration-500 opacity-0'}></div>
-        <div className={howDeleted > 0 ? "absolute bg-gray-500 w-4 h-4 rounded-full right-0 z-10 opacity-100 duration-500" : 'duration-500 opacity-0'}></div>
-        <img src={trashCan} alt="" className={howDeleted > 0 ? 'relative w-14 p-2 z-0 opacity-100 duration-500' : 'duration-500 opacity-0'}/>
+      <div
+        className={
+          howDeleted > 0
+            ? "absolute inset-0 w-fit h-fit m-2 rounded-full filter drop-shadow-glowing border-2 border-black cursor-pointer"
+            : "w-fit h-fit"
+        }
+        onClick={handleMenu}
+      >
+        <div
+          className={
+            howDeleted > 0
+              ? "absolute bg-gray-500 w-4 h-4 rounded-full right-0 z-10 animate-ping opacity-100 duration-500"
+              : "duration-500 opacity-0"
+          }
+        ></div>
+        <div
+          className={
+            howDeleted > 0
+              ? "absolute bg-gray-500 w-4 h-4 rounded-full right-0 z-10 opacity-100 duration-500"
+              : "duration-500 opacity-0"
+          }
+        ></div>
+        <img
+          src={trashCan}
+          alt=""
+          className={
+            howDeleted > 0
+              ? "relative w-14 p-2 z-0 opacity-100 duration-500"
+              : "duration-500 opacity-0"
+          }
+        />
       </div>
-      <div className={deletedMenu ? "transition absolute bg-black xl:w-1/6 w-5/6 h-full translate-x-0 top-0 text-white duration-500 z-10 overflow-y-scroll scrollbar scrollbar-thumb-gray-200 hover:scrollbar-thumb-gray-700 scrollbar-w-2 scrollbar-thumb-rounded-full scrollbar-track-gray-400" : 'transition absolute -translate-x-full xl:w-1/6 w-5/6 h-full top-0 duration-500'}>
+      <div
+        className={
+          deletedMenu
+            ? "transition absolute bg-black xl:w-1/6 w-5/6 h-full translate-x-0 top-0 text-white duration-500 z-10 overflow-y-scroll scrollbar scrollbar-thumb-gray-200 hover:scrollbar-thumb-gray-700 scrollbar-w-2 scrollbar-thumb-rounded-full scrollbar-track-gray-400"
+            : "transition absolute -translate-x-full xl:w-1/6 w-5/6 h-full top-0 duration-500"
+        }
+      >
         <div className="m-4">
           <div className="flex justify-between items-center">
             <h1 className="font-bold text-xl">Deleted Tasks</h1>
-            <img src={close} alt="" className="w-5 cursor-pointer" onClick={handleMenu}/>
+            <img
+              src={close}
+              alt=""
+              className="w-5 cursor-pointer"
+              onClick={handleMenu}
+            />
           </div>
           <hr />
-          {todoList.map(task => {
-            if(task.deleted)
-              return(
+          {todoList.map((task) => {
+            if (task.deleted)
+              return (
                 <div className="m-4">
                   <div className="flex justify-between my-5">
-                    <p className="capitalize w-5/6 overflow-hidden text-left">{howDeleted > 0 ? `${task.task}` : `Empty Trash!`}</p>
-                    <img src={undo} alt="" className={task.hoverUndo ? "w-5 cursor-pointer animate-spin" : 'w-5 cursor-pointer'} onClick={() => handleUndo(task.id)} onMouseEnter={() => hoverUndoEnter(task.id)} onMouseLeave={() => hoverUndoLeave(task.id)}/>
+                    <p className="capitalize w-5/6 overflow-hidden text-left">
+                      {howDeleted > 0 ? `${task.task}` : `Empty Trash!`}
+                    </p>
+                    <img
+                      src={undo}
+                      alt=""
+                      className={
+                        task.hoverUndo
+                          ? "w-5 cursor-pointer animate-spin"
+                          : "w-5 cursor-pointer"
+                      }
+                      onClick={() => handleUndo(task.id)}
+                      onMouseEnter={() => hoverUndoEnter(task.id)}
+                      onMouseLeave={() => hoverUndoLeave(task.id)}
+                    />
                   </div>
                   <hr />
                 </div>
               );
-            else
-              return(
-                <div className=""></div>
-              );
-            })}
+            else return <div className=""></div>;
+          })}
         </div>
       </div>
-      <div className={deletedMenu ? 'absolute w-full h-full bg-opacH inset-0 z-0 duration-500 opacity-100' : 'opacity-0 pointer-events-none duration-500'} onClick={handleMenu}></div>
+      <div
+        className={
+          deletedMenu
+            ? "absolute w-full h-full bg-opacH inset-0 z-0 duration-500 opacity-100"
+            : "opacity-0 pointer-events-none duration-500"
+        }
+        onClick={handleMenu}
+      ></div>
     </div>
   );
 }
