@@ -125,7 +125,7 @@ function TODO_LIST() {
   const handleDelete = (id) => {
     let list = todoList.map((task) => {
       let item = {};
-      if (task.id === id) item = { ...task, deleted: true };
+      if (task.id === id) item = { ...task, deleted: true, hoverUndo: false };
       else item = { ...task };
       return item;
     });
@@ -159,7 +159,7 @@ function TODO_LIST() {
   const hoverUndoEnter = (id) => {
     let list = todoList.map((task) => {
       let item = {};
-      if (task.id === id) item = { ...task, hoverUndo: true };
+      if (task.id === id) item = { ...task, hoverUndo: true, trashNear: false };
       else item = { ...task };
       return item;
     });
