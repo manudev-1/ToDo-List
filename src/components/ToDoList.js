@@ -258,7 +258,7 @@ function TODO_LIST() {
                             className={
                               task.deleted
                                 ? "w-full flex justify-center m-0"
-                                : "w-full flex justify-center m-2"
+                                : "w-full flex justify-center m-5 !left-auto !top-auto"
                             }
                             {...provided.draggableProps}
                             ref={provided.innerRef}
@@ -304,8 +304,8 @@ function TODO_LIST() {
                             <img
                               className={
                                 task.trashNear
-                                  ? "cursor-pointer duration-100 w-14"
-                                  : "cursor-pointer duration-100 w-10"
+                                  ? "cursor-pointer transition scale-125"
+                                  : "cursor-pointer transition scale-100"
                               }
                               style={{
                                 display: task.deleted ? "none" : "block",
@@ -380,32 +380,35 @@ function TODO_LIST() {
           </div>
           <hr />
           {todoList.map((task) => {
-            if (task.deleted)
-              return (
-                <div className="m-4">
-                  <div className="flex justify-between my-5">
-                  {
-                    howDeleted > 0 
-                    ? <p className="capitalize w-5/6 overflow-hidden text-left">{task.task}</p>
-                    : <p className="capitalize w-5/6 overflow-hidden text-left">Empty Trash!</p>
-                  }
-                    <img
-                      src={undo}
-                      alt=""
-                      className={
-                        task.hoverUndo
-                          ? "w-5 cursor-pointer animate-spin"
-                          : "w-5 cursor-pointer"
-                      }
-                      onClick={() => handleUndo(task.id)}
-                      onMouseEnter={() => hoverUndoEnter(task.id)}
-                      onMouseLeave={() => hoverUndoLeave(task.id)}
-                    />
+            if(howDeleted > 0)
+              if (task.deleted){
+                return (
+                  <div className="m-4">
+                    <div className="flex justify-between my-5">
+                    {
+                      howDeleted > 0 
+                      ? <p className="capitalize w-5/6 overflow-hidden text-left">{task.task}</p>
+                      : <p className="capitalize w-5/6 overflow-hidden text-left">Empty Trash!</p>
+                    }
+                      <img
+                        src={undo}
+                        alt=""
+                        className={
+                          task.hoverUndo
+                            ? "w-5 cursor-pointer animate-spin"
+                            : "w-5 cursor-pointer"
+                        }
+                        onClick={() => handleUndo(task.id)}
+                        onMouseEnter={() => hoverUndoEnter(task.id)}
+                        onMouseLeave={() => hoverUndoLeave(task.id)}
+                      />
+                    </div>
+                    <hr />
                   </div>
-                  <hr />
-                </div>
-              );
-            else return <div className=""></div>;
+                );
+              }
+              else return <div className=""></div>
+            else return <div className="my-2">Empty Trash!</div>
           })}
         </div>
       </div>
