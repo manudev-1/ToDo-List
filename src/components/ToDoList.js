@@ -78,6 +78,7 @@ function TODO_LIST() {
         },
       ]);
       setInput("");
+      localStorage.setItem('list', JSON.stringify(todoList));
     }
   };
   
