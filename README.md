@@ -1,20 +1,20 @@
-# ToDo-List
+# ToDo-List :bookmark_tabs:
 
-The goal was to create a To Do List, where the user can Add, Edit, Move and Remove the task that they created.
+Hi User! :wave: The goal was to create a To Do List, where the user can Add:heavy_plus_sign:, Edit:fountain_pen:, Move:airplane: and Remove:heavy_multiplication_x: the task that they created.
 
 ## Infos
 
 ### Reasons:
 
-I decide to create this type of App cause I like to undertake ambitious challenge to try get every time a better version of me.
+I decide to create this type of App 'cause I like to undertake ambitious challenge to try get every time a better version of me. :computer:
 
 ### Build Status:
 
-The App is currently in development.
+The App is `COMPLETE`, but always in search of something new! :heavy_check_mark:
 
 ### Code Style:
 
-Code Style: `Standard` by [Prettier](https://prettier.io/)
+Code Style: `Standard` by [Prettier](https://prettier.io/) :confetti_ball:
 
 ### Screen Shot and Video:
 
@@ -37,7 +37,7 @@ For this App I am using:
   - [React Beautiful DnD - Drag and Drop](https://www.npmjs.com/package/react-beautiful-dnd)
 - [Tailwind CSS](https://tailwindcss.com/)
   - [TailwindCss - scrollbar](https://www.npmjs.com/package/tailwind-scrollbar)
-. [AOS](https://www.npmjs.com/package/aos)
+- [AOS](https://www.npmjs.com/package/aos)
 
 
 ### Code Examples
@@ -49,7 +49,7 @@ We take the Task from the input:
   const [input, setInput] = useState("");
   const [todoList, setTodoList] = useState([]);
   
-   // * Input from btn
+  // * Input from btn
   const handleInputData = () => {
     if (input !== "") {
       const id = todoList.length + 1;
@@ -61,13 +61,15 @@ We take the Task from the input:
           complete: false,
           trashNear: false,
           deleted: false,
-          hoverUndo: false
+          hoverUndo: false,
+          read: false,
         },
       ]);
       setInput("");
+      localStorage.setItem('list', JSON.stringify(todoList));
     }
   };
-
+  
   // * Input from KB
   const handleInputDataKB = (e) => {
     if (e.key === "Enter")
@@ -81,65 +83,52 @@ We take the Task from the input:
             complete: false,
             trashNear: false,
             deleted: false,
-            hoverUndo: false
+            hoverUndo: false,
+            read: false,
           },
         ]);
         setInput("");
+        localStorage.setItem('list', JSON.stringify(todoList));
       }
-  };
+    };
 ```
 
 And I give you the opportunity to select if a task is Completed or Not:
 
 ```
-  const handleCompleteTask = (id) => {
-    let list = todoList.map((task) => {
-      let item = {};
-      if (task.id == id) {
-        item = { ...task, complete: !task.complete };
-      } else item = { ...task };
-      return item;
-    });
-    setTodoList(list);
-    console.log(todoList)
-  };
+  // * Complete Task
+    const handleCompleteTask = (id) => {
+      let list = todoList.map((task) => {
+        let item = {};
+        if (task.id === id) {
+          item = { ...task, complete: !task.complete };
+        } else item = { ...task };
+        return item;
+      });
+      setTodoList(list);
+      localStorage.setItem('list', JSON.stringify(todoList));
+    };
 ```
 
 Delete Task:
 
 ```
-  const handleDelete = (id) => {
-    let list = todoList.map((task) => {
-      let item = {}
-      if (task.id === id)
-        item = { ...task, deleted: true }
-      else item = { ...task }
-      return item
-    });
-    setTodoList(list)
-  };
+    // * Delete Task
+    const handleDelete = (id) => {
+      let list = todoList.map((task) => {
+        let item = {};
+        if (task.id === id) item = { ...task, deleted: true, hoverUndo: false };
+        else item = { ...task };
+        return item;
+      });
+      setTodoList(list);
+      setTotDeleted(totDeleted + 1);
+      localStorage.setItem('totDeleted', totDeleted)
+      localStorage.setItem('list', JSON.stringify(todoList));
+    };
 ```
 
-Drag Memory Function:
-
-```
-  const handleOnDragEnd = (result) => {
-    if (!result.destination) return;
-    const list = Array.from(todoList);
-    const [reorderedTask] = list.splice(result.source.index, 1);
-    list.splice(result.destination.index, 0, reorderedTask);
-
-    setDragged(false);
-    setTodoList(list);
-  };
-
-  const handleDrag = () => {
-    if(todoList.length > 1)
-      setDragged(true);
-  };
-```
-
-Restore delited items via a menu:
+Deleted Menu, in case you want a deleted task back:
 
 ```
   const handleUndo = (id) => {
@@ -149,14 +138,48 @@ Restore delited items via a menu:
       else item = { ...task };
       return item;
     });
-    setTodoList(list)
+    setTodoList(list);
+    setTotDeleted(totDeleted - 1);
+    localStorage.setItem('totDeleted', totDeleted)
+    localStorage.setItem('list', JSON.stringify(todoList));
+  };
+```
+
+Set local storage to store the task:
+
+```
+  const getLocalStorage = () => {
+    let list = localStorage.getItem('list')
+    
+    if(list) return JSON.parse(localStorage.getItem('list'));
+    else return [];
   }
+
+  const getTotDeteled = () => {
+    let list = localStorage.getItem('totDeleted')
+
+    if(list) return JSON.parse(localStorage.getItem('totDeleted'));
+    else return [];
+  }
+  ...
+  ...
+  ...
+    // * Tasks
+  useEffect(() => {
+    localStorage.setItem('list', JSON.stringify(todoList))
+  }, [todoList])
+
+  // * totDeleted
+  useEffect(() => {
+    localStorage.setItem('totDeleted', JSON.stringify(Number(totDeleted)))
+  }, [totDeleted])
+  
 ```
 
 ### How To Use It?
 
-Click on the Input, Write the Task, Press the Button and you are done.
+Click on the Input, Write the Task, Press the Button and you are done. You improve your self we store the task :thumbsup:
 
 ### License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License. :balance_scale:
