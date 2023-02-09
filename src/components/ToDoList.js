@@ -232,6 +232,7 @@ function TODO_LIST() {
     let filter = items.filter(item => item.deleted === false);
     setTodoList(filter)
     localStorage.setItem('list', JSON.stringify(todoList))
+    setTotDeleted(Number(0))
     localStorage.setItem('totDeleted', Number(0))
   }
 
