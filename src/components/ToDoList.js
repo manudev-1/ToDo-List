@@ -14,38 +14,53 @@ function TODO_LIST() {
     AOS.init();
   }, []);
 
+  // ! Get In LocalStorage
+  const getLocalStorage = () => {
+    let list = localStorage.getItem('list')
+    
+    if(list) return JSON.parse(localStorage.getItem('list'));
+    else return [];
+  }
+
+  const getTotDeteled = () => {
+    let list = localStorage.getItem('totDeleted')
+
+    if(list) return JSON.parse(localStorage.getItem('totDeleted'));
+    else return [];
+  }
+  
   // ! Input Edit
   // * Focus Var
   const [inputFocus, setInputFocus] = useState(false);
-
+  
   // * Focus Detection
   const handleInputFocus = () => {
     setInputFocus(true);
   };
-
+  
   // * Blur Detection
   const handleInputBlur = () => {
     setInputFocus(false);
   };
-
+  
   // ! Title
   // * Title Var
   const [title, setTitle] = useState("");
-
+  
   // * Title Modify
   const handleTitle = () => {
     document.title = "ToDo List |";
     setTitle(document.getElementById("txAdd").value);
     document.title += " " + title.charAt(0).toUpperCase() + title.slice(1);
   };
-
+  
   // ! ToDolist
   // * ToDoList Var
   const [input, setInput] = useState("");
-  const [todoList, setTodoList] = useState([]);
+  const [todoList, setTodoList] = useState(getLocalStorage());
   const [isDragged, setDragged] = useState(false);
-  const [howDeleted, setHowDeleted] = useState(0);
-
+  const [totDeleted, setTotDeleted] = useState(getTotDeteled());
+  
   // * Input from btn
   const handleInputData = () => {
     if (input !== "") {
@@ -65,7 +80,7 @@ function TODO_LIST() {
       setInput("");
     }
   };
-
+  
   // * Input from KB
   const handleInputDataKB = (e) => {
     if (e.key === "Enter")
@@ -84,78 +99,85 @@ function TODO_LIST() {
           },
         ]);
         setInput("");
+        localStorage.setItem('list', JSON.stringify(todoList));
       }
-  };
-
-  // * Complete Task
-  const handleCompleteTask = (id) => {
-    let list = todoList.map((task) => {
-      let item = {};
-      if (task.id === id) {
-        item = { ...task, complete: !task.complete };
-      } else item = { ...task };
-      return item;
-    });
-    setTodoList(list);
-  };
-
-  // * Manage Near to TrashCan Icon
-  const handleEnterTrash = (id) => {
-    let list = todoList.map((task) => {
-      let item = {};
-      if (task.id === id) item = { ...task, trashNear: true };
-      else item = { ...task };
-      return item;
-    });
-    setTodoList(list);
-  };
-
-  // * Manage Near to TrashCan Icon
-  const handleLeaveTrash = (id) => {
-    let list = todoList.map((task) => {
-      let item = {};
-      if (task.id === id) item = { ...task, trashNear: false };
-      else item = { ...task };
-      return item;
-    });
-    setTodoList(list);
-  };
-
-  // * Delete Task
-  const handleDelete = (id) => {
-    let list = todoList.map((task) => {
-      let item = {};
-      if (task.id === id) item = { ...task, deleted: true, hoverUndo: false };
-      else item = { ...task };
-      return item;
-    });
-    setTodoList(list);
-    setHowDeleted(howDeleted + 1);
-  };
-
-  // * Drag Memory Function
-  const handleOnDragEnd = (result) => {
-    if (!result.destination) return;
-    const list = Array.from(todoList);
-    const [reorderedTask] = list.splice(result.source.index, 1);
-    list.splice(result.destination.index, 0, reorderedTask);
-
-    if (todoList.length > 1) setDragged(false);
-    setTodoList(list);
-  };
-
-  // * Dragged or Not
-  const handleDrag = () => {
-    if (todoList.length > 1) setDragged(true);
+    };
+    
+    // * Complete Task
+    const handleCompleteTask = (id) => {
+      let list = todoList.map((task) => {
+        let item = {};
+        if (task.id === id) {
+          item = { ...task, complete: !task.complete };
+        } else item = { ...task };
+        return item;
+      });
+      setTodoList(list);
+      localStorage.setItem('list', JSON.stringify(todoList));
+    };
+    
+    // * Manage Near to TrashCan Icon
+    const handleEnterTrash = (id) => {
+      let list = todoList.map((task) => {
+        let item = {};
+        if (task.id === id) item = { ...task, trashNear: true };
+        else item = { ...task };
+        return item;
+      });
+      setTodoList(list);
+      localStorage.setItem('list', JSON.stringify(todoList));
+    };
+    
+    // * Manage Near to TrashCan Icon
+    const handleLeaveTrash = (id) => {
+      let list = todoList.map((task) => {
+        let item = {};
+        if (task.id === id) item = { ...task, trashNear: false };
+        else item = { ...task };
+        return item;
+      });
+      setTodoList(list);
+      localStorage.setItem('list', JSON.stringify(todoList));
+    };
+    
+    // * Delete Task
+    const handleDelete = (id) => {
+      let list = todoList.map((task) => {
+        let item = {};
+        if (task.id === id) item = { ...task, deleted: true, hoverUndo: false };
+        else item = { ...task };
+        return item;
+      });
+      setTodoList(list);
+      setTotDeleted(totDeleted + 1);
+      localStorage.setItem('totDeleted', totDeleted)
+      localStorage.setItem('list', JSON.stringify(todoList));
+    };
+    
+    // * Drag Memory Function
+    const handleOnDragEnd = (result) => {
+      if (!result.destination) return;
+      const list = Array.from(todoList);
+      const [reorderedTask] = list.splice(result.source.index, 1);
+      list.splice(result.destination.index, 0, reorderedTask);
+      
+      if (todoList.length > 1) setDragged(false);
+      setTodoList(list);
+      localStorage.setItem('list', JSON.stringify(todoList));
+    };
+    
+    // * Dragged or Not
+    const handleDrag = () => {
+      if (todoList.length > 1) setDragged(true);
   };
 
   // ! Menu of Deleted
   const [deletedMenu, setDeletedMenu] = useState(false);
-
+  
   const handleMenu = () => {
     setDeletedMenu(!deletedMenu);
   };
-
+  
   const hoverUndoEnter = (id) => {
     let list = todoList.map((task) => {
       let item = {};
@@ -164,8 +186,9 @@ function TODO_LIST() {
       return item;
     });
     setTodoList(list);
+    localStorage.setItem('list', JSON.stringify(todoList));
   };
-
+  
   const hoverUndoLeave = (id) => {
     let list = todoList.map((task) => {
       let item = {};
@@ -174,8 +197,9 @@ function TODO_LIST() {
       return item;
     });
     setTodoList(list);
+    localStorage.setItem('list', JSON.stringify(todoList));
   };
-
+  
   const handleUndo = (id) => {
     let list = todoList.map((task) => {
       let item = {};
@@ -184,8 +208,32 @@ function TODO_LIST() {
       return item;
     });
     setTodoList(list);
-    setHowDeleted(howDeleted - 1);
+    setTotDeleted(totDeleted - 1);
+    localStorage.setItem('totDeleted', totDeleted)
+    localStorage.setItem('list', JSON.stringify(todoList));
   };
+
+  // ! Set in LocalStorage
+  
+  // * Tasks
+  useEffect(() => {
+    localStorage.setItem('list', JSON.stringify(todoList))
+  }, [todoList])
+
+  // * totDeleted
+  useEffect(() => {
+    localStorage.setItem('totDeleted', JSON.stringify(Number(totDeleted)))
+  }, [totDeleted])
+
+  // ! Clean Deleted Item
+  
+  const handleDefTrash = () => {
+    let items = JSON.parse(localStorage.getItem('list'))
+    let filter = items.filter(item => item.deleted === false);
+    setTodoList(filter)
+    localStorage.setItem('list', JSON.stringify(todoList))
+    localStorage.setItem('totDeleted', Number(0))
+  }
 
   return (
     <div className="ToDo_List font-lato">
@@ -193,7 +241,7 @@ function TODO_LIST() {
         className="w-full h-1/2 flex justify-center items-center"
         data-aos-duration="600"
         data-aos="zoom-in-down"
-      >
+        >
         <h1 className="stroke font-bold xl:text-9xl text-5xl my-24">
           ToDo-List
         </h1>
@@ -203,14 +251,14 @@ function TODO_LIST() {
         data-aos-duration="600"
         data-aos="zoom-in-down"
         data-aos-delay="250"
-      >
+        >
         <div className="xl:w-1/3 flex w-5/6 justify-center">
           <input
             type="text"
             className={
               inputFocus
-                ? "outline-none border-none h-10 xl:w-11/12 w-5/6 rounded-lg p-2 duration-500 capitalize filter drop-shadow-shaded placeholder:text-gray-200 bg-black text-gray-200"
-                : "outline-none border-none h-10 xl:w-11/12 w-5/6 rounded-lg p-2 duration-500 capitalize placeholder:text-gray-200 bg-black text-gray-200"
+              ? "outline-none border-none h-10 xl:w-11/12 w-5/6 rounded-lg p-2 duration-500 capitalize filter drop-shadow-shaded placeholder:text-gray-200 bg-black text-gray-200"
+              : "outline-none border-none h-10 xl:w-11/12 w-5/6 rounded-lg p-2 duration-500 capitalize placeholder:text-gray-200 bg-black text-gray-200"
             }
             placeholder="What will you do?"
             maxLength={35}
@@ -221,15 +269,15 @@ function TODO_LIST() {
             onInput={(e) => setInput(e.target.value)}
             onChange={handleTitle}
             onKeyDown={handleInputDataKB}
-          />
+            />
           <button
             className={
               inputFocus
-                ? "w-1/6 bg-black rounded-lg text-gray-200 filter drop-shadow-shaded duration-500"
-                : "w-1/6 duration-500 bg-black rounded-lg text-gray-200"
+              ? "w-1/6 bg-black rounded-lg text-gray-200 filter drop-shadow-shaded duration-500"
+              : "w-1/6 duration-500 bg-black rounded-lg text-gray-200"
             }
             onClick={() => handleInputData()}
-          >
+            >
             Add
           </button>
         </div>
@@ -257,8 +305,8 @@ function TODO_LIST() {
                           <section
                             className={
                               task.deleted
-                                ? "w-full flex justify-center m-0"
-                                : "w-full flex justify-center m-5 !left-auto !top-auto"
+                                ? "w-full justify-center my-0 hidden"
+                                : "w-full flex justify-center my-5 !left-auto !top-auto"
                             }
                             {...provided.draggableProps}
                             ref={provided.innerRef}
@@ -330,7 +378,7 @@ function TODO_LIST() {
       </div>
       <div
         className={
-          howDeleted > 0
+          totDeleted > 0
             ? "absolute inset-0 w-fit h-fit m-2 rounded-full filter drop-shadow-glowing border-2 border-black cursor-pointer"
             : "w-fit h-fit"
         }
@@ -338,14 +386,14 @@ function TODO_LIST() {
       >
         <div
           className={
-            howDeleted > 0
+            totDeleted > 0
               ? "absolute bg-gray-500 w-4 h-4 rounded-full right-0 z-10 animate-ping opacity-100 duration-500"
               : "duration-500 opacity-0"
           }
         ></div>
         <div
           className={
-            howDeleted > 0
+            totDeleted > 0
               ? "absolute bg-gray-500 w-4 h-4 rounded-full right-0 z-10 opacity-100 duration-500"
               : "duration-500 opacity-0"
           }
@@ -354,7 +402,7 @@ function TODO_LIST() {
           src={trashCan}
           alt=""
           className={
-            howDeleted > 0
+            totDeleted > 0
               ? "relative w-14 p-2 z-0 opacity-100 duration-500"
               : "duration-500 opacity-0"
           }
@@ -380,13 +428,13 @@ function TODO_LIST() {
           </div>
           <hr />
           {todoList.map((task) => {
-            if(howDeleted > 0)
+            if(totDeleted > 0)
               if (task.deleted){
                 return (
                   <div className="m-4">
                     <div className="flex justify-between my-5">
                     {
-                      howDeleted > 0 
+                      totDeleted > 0 
                       ? <p className="capitalize w-5/6 overflow-hidden text-left">{task.task}</p>
                       : <p className="capitalize w-5/6 overflow-hidden text-left">Empty Trash!</p>
                     }
@@ -410,6 +458,9 @@ function TODO_LIST() {
               else return <div className=""></div>
             else return <div className="my-2">Empty Trash!</div>
           })}
+        </div>
+        <div class="absolute bottom-0 w-full h-10 flex justify-center items-center border-t-2">
+          <button className="font-bold" onClick={handleDefTrash}>Empty Your Trash!</button>
         </div>
       </div>
         <div
