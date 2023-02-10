@@ -11,7 +11,9 @@ import undo from "../assets/undo.svg";
 function TODO_LIST() {
   // ! Init AOS
   useEffect(() => {
-    AOS.init();
+    AOS.init({
+      once: true
+    });
   }, []);
 
   // ! Get In LocalStorage
