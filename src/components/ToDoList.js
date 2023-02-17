@@ -246,11 +246,10 @@ function TODO_LIST() {
   const handleEditing = (id) => {
     let list = todoList.map((task) => {
       let item = {};
-      if (task.id === id) item = { ...task, editMode: false };
+      if (task.id === id) item = { ...task, editMode: !task.editMode };
       else item = { ...task };
       return item;
     });
-    console.log("Work Func!")
     setTodoList(list);
     localStorage.setItem("list", JSON.stringify(todoList));
   };
@@ -345,20 +344,14 @@ function TODO_LIST() {
                               className={
                                 task.deleted
                                   ? "hidden my-0"
-                                  : "flex justify-between items-center border-2 border-solid border-black px-5 py-2 my-2 w-full cursor-pointer "
+                                  : "flex justify-between items-center border-2 border-solid border-black px-5 py-2 my-2 w-full"
                               }
                               complete={String(task.complete)}
-                              onClick={() => handleCompleteTask(task.id)}
                             >
                               <input
-                                className={
-                                  task.complete
-                                    ? "capitalize text-gray-300 duration-500 line-through text-left text-ellipsis pointer-events-none"
-                                    : "capitalize text-gray-600 duration-500 text-left pointer-events-none"
-                                }
+                                className={`capitalize text-ellipsis outline-none ${task.complete ? 'text-gray-200 line-through duration-500' : null} ${task.editMode ? 'border-b-2 border-black duration-500' : null}`}
                                 defaultValue={task.task}
-                                contentEditable={task.editMode ? 'true' : 'false'}
-                                onChange={console.log("Work!")}
+                                contentEditable='false'
                               />
                               <p
                                 className={
@@ -369,12 +362,13 @@ function TODO_LIST() {
                               >
                                 Completed
                               </p>
+                              <div className={`border-2 border-black rounded-full w-5 h-5 relative ${task.complete ? 'bg-black' : null}`} onClick={() => handleCompleteTask(task.id)}></div>
                             </div>
                             <img
                               className={
                                 task.trashNear
-                                  ? "cursor-pointer transition scale-125"
-                                  : "cursor-pointer transition scale-100"
+                                  ? "cursor-pointer transition scale-125 w-10"
+                                  : "cursor-pointer transition scale-100 w-10"
                               }
                               style={{
                                 display: task.deleted ? "none" : "block",
@@ -385,7 +379,7 @@ function TODO_LIST() {
                               onMouseLeave={() => handleLeaveTrash(task.id)}
                               onClick={() => handleDelete(task.id)}
                             />
-                            <img src={edit} alt="" className="h-10 cursor-pointer" onClick={() => handleEditing(task.id)}/>
+                            <img src={edit} alt="" className="w-10 cursor-pointer" onClick={() => handleEditing(task.id)}/>
                           </section>
                         )}
                       </Draggable>
