@@ -8,6 +8,7 @@ import drag from "../assets/drag.svg";
 import close from "../assets/close.svg";
 import undo from "../assets/undo.svg";
 import edit from "../assets/editing.png"
+import ContentEditable from "react-contenteditable";
 
 function TODO_LIST() {
   // ! Init AOS
@@ -335,7 +336,7 @@ function TODO_LIST() {
                               alt=""
                               {...provided.dragHandleProps}
                               onDrag={handleDrag}
-                              className="w-5 m-2 duration-500"
+                              className="h-5 m-2 duration-500"
                               style={{
                                 display: task.deleted ? "none" : "block",
                               }}
@@ -348,10 +349,10 @@ function TODO_LIST() {
                               }
                               complete={String(task.complete)}
                             >
-                              <input
+                              <ContentEditable
                                 className={`capitalize text-ellipsis outline-none ${task.complete ? 'text-gray-200 line-through duration-500' : null} ${task.editMode ? 'border-b-2 border-black duration-500' : null}`}
-                                defaultValue={task.task}
-                                contentEditable='false'
+                                html={task.task}
+                                disabled={task.editMode ? 'true' : 'false'}
                               />
                               <p
                                 className={
@@ -367,8 +368,8 @@ function TODO_LIST() {
                             <img
                               className={
                                 task.trashNear
-                                  ? "cursor-pointer transition scale-125 w-10"
-                                  : "cursor-pointer transition scale-100 w-10"
+                                  ? "cursor-pointer transition scale-125 w-5"
+                                  : "cursor-pointer transition scale-100 w-5"
                               }
                               style={{
                                 display: task.deleted ? "none" : "block",
@@ -379,7 +380,7 @@ function TODO_LIST() {
                               onMouseLeave={() => handleLeaveTrash(task.id)}
                               onClick={() => handleDelete(task.id)}
                             />
-                            <img src={edit} alt="" className="w-10 cursor-pointer" onClick={() => handleEditing(task.id)}/>
+                            <img src={edit} alt="" className="w-5 cursor-pointer" onClick={() => handleEditing(task.id)}/>
                           </section>
                         )}
                       </Draggable>
