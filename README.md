@@ -35,10 +35,10 @@ For this App I am using:
 - [React](https://en.reactjs.org/)
   - [React Router Dom@6](https://reactrouter.com/en/main)
   - [React Beautiful DnD - Drag and Drop](https://www.npmjs.com/package/react-beautiful-dnd)
+  - [React-contenteditable](https://github.com/lovasoa/react-contenteditable#readme)
 - [Tailwind CSS](https://tailwindcss.com/)
   - [TailwindCss - scrollbar](https://www.npmjs.com/package/tailwind-scrollbar)
 - [AOS](https://www.npmjs.com/package/aos)
-- [React-contenteditable](https://github.com/lovasoa/react-contenteditable#readme)
 
 
 ### Code Examples
