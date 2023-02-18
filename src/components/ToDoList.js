@@ -255,6 +255,17 @@ function TODO_LIST() {
     localStorage.setItem("list", JSON.stringify(todoList));
   };
 
+  const handleEdit = (id, evt) => {
+    let list = todoList.map((task) => {
+      let item = {};
+      if (task.id === id) item = { ...task, task: {html: evt.target.value}};
+      else item = { ...task };
+      return item;
+    });
+    setTodoList(list);
+    localStorage.setItem("list", JSON.stringify(todoList));
+  };
+
   return (
     <div className="ToDo_List font-lato">
       <div
@@ -350,9 +361,11 @@ function TODO_LIST() {
                               complete={String(task.complete)}
                             >
                               <ContentEditable
-                                className={`capitalize text-ellipsis outline-none ${task.complete ? 'text-gray-200 line-through duration-500' : null} ${task.editMode ? 'border-b-2 border-black duration-500' : null}`}
+                                id='editable'
+                                className={`capitalize text-ellipsis outline-none ${task.complete ? 'text-gray-200 line-through duration-500' : null} ${task.editMode ? 'underline duration-500' : null} ${task.editMode ? 'text-black' : null}`}
                                 html={task.task}
-                                disabled={task.editMode ? 'true' : 'false'}
+                                disabled={!task.editMode}
+                                onChange={() => handleEdit(task.id)}
                               />
                               <p
                                 className={
