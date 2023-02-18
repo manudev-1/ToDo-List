@@ -38,6 +38,7 @@ For this App I am using:
 - [Tailwind CSS](https://tailwindcss.com/)
   - [TailwindCss - scrollbar](https://www.npmjs.com/package/tailwind-scrollbar)
 - [AOS](https://www.npmjs.com/package/aos)
+- [React-contenteditable](https://github.com/lovasoa/react-contenteditable#readme)
 
 
 ### Code Examples
