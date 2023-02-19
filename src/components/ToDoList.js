@@ -249,6 +249,7 @@ function TODO_LIST() {
         let item = {};
         if (task.id === id) 
           if (!task.complete) item = { ...task, editMode: !task.editMode };
+          else item = { ...task };
         else item = { ...task };
         return item;
     });
@@ -257,7 +258,7 @@ function TODO_LIST() {
   };
 
   const handleEdit = (id) => {
-    var contect = document.getElementById("editable").innerHTML
+    var contect = document.getElementById(id).innerHTML
     let list = todoList.map((task) => {
       let item = {};
       if (task.id === id) item = { ...task, task: contect};
@@ -316,7 +317,7 @@ function TODO_LIST() {
         </div>
         <div className="xl:w-2/6 w-5/6 m-5 text-gray-600">
           <DragDropContext onDragEnd={handleOnDragEnd} onDragStart={handleDrag}>
-            <Droppable droppableId="taks">
+            <Droppable droppableId="task">
               {(provided) => (
                 <section
                   {...provided.droppableProps}
@@ -363,7 +364,7 @@ function TODO_LIST() {
                               complete={String(task.complete)}
                             >
                               <ContentEditable
-                                id='editable'
+                                id={task.id}
                                 className={`capitalize text-ellipsis outline-none ${task.complete ? 'text-gray-200 line-through duration-500' : null} ${task.editMode ? 'underline duration-500' : null} ${task.editMode ? 'text-black' : null}`}
                                 html={task.task}
                                 disabled={!task.editMode}
@@ -375,7 +376,7 @@ function TODO_LIST() {
                                 >
                                   Completed
                                 </p>
-                                <div className={`border-2 border-black rounded-full w-5 h-5 relative ${task.complete ? 'bg-black' : null}`} onClick={() => handleCompleteTask(task.id)}></div>
+                                <div className={`border-2 border-black rounded-full w-5 h-5 relative cursor-pointer ${task.complete ? 'bg-black' : null}`} onClick={() => handleCompleteTask(task.id)}></div>
                               </div>
                             </div>
                             <img
@@ -393,7 +394,7 @@ function TODO_LIST() {
                               onMouseLeave={() => handleLeaveTrash(task.id)}
                               onClick={() => handleDelete(task.id)}
                             />
-                            <img src={edit} alt="" className="w-5 cursor-pointer" onClick={() => handleEditing(task.id)}/>
+                            <img src={edit} alt="" className={`w-5 ${task.complete ? null : 'cursor-pointer'}`} onClick={() => handleEditing(task.id)}/>
                           </section>
                         )}
                       </Draggable>
