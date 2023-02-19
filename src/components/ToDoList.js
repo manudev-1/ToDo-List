@@ -493,7 +493,7 @@ function TODO_LIST() {
               else return <div className="my-2">Empty Trash!</div>;
             })}
           </div>
-          <div className="absolute bottom-0 w-full h-10 flex justify-center items-center border-t-2">
+          <div className="relative w-full h-10 flex justify-center items-center border-t-2 bg-black duration-200">
             <button className="font-bold" onClick={handleDefTrash}>
               Empty Your Trash!
             </button>
