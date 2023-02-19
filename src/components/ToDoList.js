@@ -7,7 +7,7 @@ import trashCan from "../assets/trash-can.svg";
 import drag from "../assets/drag.svg";
 import close from "../assets/close.svg";
 import undo from "../assets/undo.svg";
-import edit from "../assets/editing.png"
+import edit from "../assets/editing.png";
 import ContentEditable from "react-contenteditable";
 
 function TODO_LIST() {
@@ -246,22 +246,22 @@ function TODO_LIST() {
 
   const handleEditing = (id) => {
     let list = todoList.map((task) => {
-        let item = {};
-        if (task.id === id) 
-          if (!task.complete) item = { ...task, editMode: !task.editMode };
-          else item = { ...task };
+      let item = {};
+      if (task.id === id)
+        if (!task.complete) item = { ...task, editMode: !task.editMode };
         else item = { ...task };
-        return item;
+      else item = { ...task };
+      return item;
     });
     setTodoList(list);
     localStorage.setItem("list", JSON.stringify(todoList));
   };
 
   const handleEdit = (id) => {
-    var contect = document.getElementById(id).innerHTML
+    var contect = document.getElementById(id).innerHTML;
     let list = todoList.map((task) => {
       let item = {};
-      if (task.id === id) item = { ...task, task: contect};
+      if (task.id === id) item = { ...task, task: contect };
       else item = { ...task };
       return item;
     });
@@ -365,18 +365,35 @@ function TODO_LIST() {
                             >
                               <ContentEditable
                                 id={task.id}
-                                className={`capitalize text-ellipsis outline-none ${task.complete ? 'text-gray-200 line-through duration-500' : null} ${task.editMode ? 'underline duration-500' : null} ${task.editMode ? 'text-black' : null}`}
+                                className={`capitalize text-ellipsis outline-none ${
+                                  task.complete
+                                    ? "text-gray-200 line-through duration-500"
+                                    : null
+                                } ${
+                                  task.editMode
+                                    ? "underline duration-500"
+                                    : null
+                                } ${task.editMode ? "text-black" : null}`}
                                 html={task.task}
                                 disabled={!task.editMode}
                                 onChange={() => handleEdit(task.id)}
                               />
                               <div className="flex justify-center">
                                 <p
-                                  className={`capitalize font-bold duration-500 float-right mr-2 ${task.complete ? "text-black opacity-100 duration-500" : 'opacity-0'}`}
+                                  className={`capitalize font-bold duration-500 float-right mr-2 ${
+                                    task.complete
+                                      ? "text-black opacity-100 duration-500"
+                                      : "opacity-0"
+                                  }`}
                                 >
                                   Completed
                                 </p>
-                                <div className={`border-2 border-black rounded-full w-5 h-5 relative cursor-pointer ${task.complete ? 'bg-black' : null}`} onClick={() => handleCompleteTask(task.id)}></div>
+                                <div
+                                  className={`border-2 border-black rounded-full w-5 h-5 relative cursor-pointer ${
+                                    task.complete ? "bg-black" : null
+                                  }`}
+                                  onClick={() => handleCompleteTask(task.id)}
+                                ></div>
                               </div>
                             </div>
                             <img
@@ -394,7 +411,14 @@ function TODO_LIST() {
                               onMouseLeave={() => handleLeaveTrash(task.id)}
                               onClick={() => handleDelete(task.id)}
                             />
-                            <img src={edit} alt="" className={`w-5 ${task.complete ? null : 'cursor-pointer'}`} onClick={() => handleEditing(task.id)}/>
+                            <img
+                              src={edit}
+                              alt=""
+                              className={`w-5 ${
+                                task.complete ? null : "cursor-pointer"
+                              }`}
+                              onClick={() => handleEditing(task.id)}
+                            />
                           </section>
                         )}
                       </Draggable>
@@ -408,7 +432,9 @@ function TODO_LIST() {
         </div>
       </div>
       <div
-        className={`absolute top-0 -left-20 transition w-fit h-fit m-2 rounded-full filter drop-shadow-glowing cursor-pointer ${totDeleted > 0 ? "border-2 border-black !left-0" : null }`}
+        className={`absolute top-0 -left-20 transition w-fit h-fit m-2 rounded-full filter drop-shadow-glowing cursor-pointer ${
+          totDeleted > 0 ? "border-2 border-black !left-0" : null
+        }`}
         onClick={handleMenu}
       >
         <div
