@@ -8,6 +8,7 @@ import drag from "../assets/drag.svg";
 import close from "../assets/close.svg";
 import undo from "../assets/undo.svg";
 import edit from "../assets/editing.png"
+import EmptyImg from "../assets/empty-folder.png"
 import ContentEditable from "react-contenteditable";
 
 function TODO_LIST() {
@@ -506,9 +507,14 @@ function TODO_LIST() {
               else return <></>;
             })
             :
-            <p className="capitalize w-5/6 overflow-hidden text-left">
-              Empty Trash!
-            </p>
+            <div>
+              <section className="flex flex-col items-center">
+                <img src={EmptyImg} width={64} height={64} alt=""/>
+                <p className="capitalize w-5/6 overflow-hidden">
+                  Empty Trash!
+                </p>
+              </section>
+            </div>
             }
           </div>
           <div className="relative w-full h-10 top-[calc(100%-16.666667%-5rem)] flex justify-center items-center border-t-2 bg-black duration-200">
