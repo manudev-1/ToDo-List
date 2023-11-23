@@ -46,7 +46,7 @@ For this App I am using:
 For make this App work you need to get some input, process them and return an output. For doing this I devide the App into several parts:
 
 We take the Task from the input:
-```
+```jsx
   const [input, setInput] = useState("");
   const [todoList, setTodoList] = useState([]);
   
@@ -96,7 +96,7 @@ We take the Task from the input:
 
 And I give you the opportunity to select if a task is Completed or Not:
 
-```
+```jsx
   // * Complete Task
     const handleCompleteTask = (id) => {
       let list = todoList.map((task) => {
@@ -113,7 +113,7 @@ And I give you the opportunity to select if a task is Completed or Not:
 
 Delete Task:
 
-```
+```jsx
     // * Delete Task
     const handleDelete = (id) => {
       let list = todoList.map((task) => {
@@ -131,7 +131,7 @@ Delete Task:
 
 Deleted Menu, in case you want a deleted task back:
 
-```
+```jsx
   const handleUndo = (id) => {
     let list = todoList.map((task) => {
       let item = {};
@@ -148,7 +148,7 @@ Deleted Menu, in case you want a deleted task back:
 
 Set local storage to store the task:
 
-```
+```jsx
   const getLocalStorage = () => {
     let list = localStorage.getItem('list')
     
