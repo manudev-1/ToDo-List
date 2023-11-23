@@ -509,7 +509,7 @@ function TODO_LIST() {
             :
             <div>
               <section className="flex flex-col items-center">
-                <img src={EmptyImg} width={64} height={64}/>
+                <img src={EmptyImg} width={64} height={64} alt=""/>
                 <p className="capitalize w-5/6 overflow-hidden">
                   Empty Trash!
                 </p>
