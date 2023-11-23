@@ -33,6 +33,13 @@ function TODO_LIST() {
     else return [];
   };
 
+  const getBeenSeen = () => {
+    let item = localStorage.getItem("beenSeen");
+
+    if (item != null) return item;
+    else return "-1";
+  };
+
   // ! Input Edit
   // * Focus Var
   const [inputFocus, setInputFocus] = useState(false);
@@ -64,6 +71,7 @@ function TODO_LIST() {
   const [todoList, setTodoList] = useState(getLocalStorage());
   const [isDragged, setDragged] = useState(false);
   const [totDeleted, setTotDeleted] = useState(getTotDeteled());
+  const [beenSeen, setBeenSeen] = useState(getBeenSeen());
 
   // * Input from btn
   const handleInputData = () => {
@@ -156,8 +164,10 @@ function TODO_LIST() {
     });
     setTodoList(list);
     setTotDeleted(totDeleted + 1);
+    setBeenSeen(true)
     localStorage.setItem("totDeleted", totDeleted);
     localStorage.setItem("list", JSON.stringify(todoList));
+    localStorage.setItem("beenSeen", beenSeen);
   };
 
   // * Drag Memory Function
@@ -182,6 +192,7 @@ function TODO_LIST() {
 
   const handleMenu = () => {
     setDeletedMenu(!deletedMenu);
+    setBeenSeen(false)
   };
 
   const hoverUndoEnter = (id) => {
@@ -231,8 +242,12 @@ function TODO_LIST() {
     localStorage.setItem("totDeleted", JSON.stringify(Number(totDeleted)));
   }, [totDeleted]);
 
-  // ! Clean Deleted Item
+  // * beenSeen
+  useEffect(() => {
+    localStorage.setItem("beenSeen", beenSeen);
+  }, [beenSeen]);
 
+  // ! Clean Deleted Item
   const handleDefTrash = () => {
     let items = JSON.parse(localStorage.getItem("list"));
     let filter = items.filter((item) => item.deleted === false);
@@ -243,7 +258,6 @@ function TODO_LIST() {
   };
 
   // ! Editing mode
-
   const handleEditing = (id) => {
     let list = todoList.map((task) => {
         let item = {};
@@ -414,14 +428,14 @@ function TODO_LIST() {
         <div
           className={
             totDeleted > 0
-              ? "absolute bg-gray-500 w-4 h-4 rounded-full right-0 z-10 animate-ping opacity-100 duration-500"
+              ? `absolute bg-gray-500 w-4 h-4 rounded-full right-0 z-10 animate-ping opacity-100 duration-500 ${!beenSeen ? 'hidden' : null}`
               : "duration-500 opacity-0"
           }
         ></div>
         <div
           className={
             totDeleted > 0
-              ? "absolute bg-gray-500 w-4 h-4 rounded-full right-0 z-10 opacity-100 duration-500"
+              ? `absolute bg-gray-500 w-4 h-4 rounded-full right-0 z-10 opacity-100 duration-500 ${!beenSeen ? 'hidden' : null}`
               : "duration-500 opacity-0"
           }
         ></div>
@@ -447,7 +461,7 @@ function TODO_LIST() {
               : "transition absolute -translate-x-full xl:w-1/6 w-5/6 h-full top-0 duration-500"
           }
         >
-          <div className="m-4">
+          <div className="m-4 h-1/6">
             <div className="flex justify-between items-center">
               <h1 className="font-bold text-xl">Deleted Tasks</h1>
               <img
@@ -458,21 +472,20 @@ function TODO_LIST() {
               />
             </div>
             <hr />
-            {todoList.map((task) => {
+            {
+            todoList.length !== 0 && totDeleted !== 0
+            ?
+            todoList.map((task) => {
               if (totDeleted > 0)
                 if (task.deleted) {
                   return (
                     <div className="m-4">
                       <div className="flex justify-between my-5">
-                        {totDeleted > 0 ? (
+                        {
                           <p className="capitalize w-5/6 overflow-hidden text-left">
                             {task.task}
                           </p>
-                        ) : (
-                          <p className="capitalize w-5/6 overflow-hidden text-left">
-                            Empty Trash!
-                          </p>
-                        )}
+                        }
                         <img
                           src={undo}
                           alt=""
@@ -489,11 +502,16 @@ function TODO_LIST() {
                       <hr />
                     </div>
                   );
-                } else return <div className=""></div>;
-              else return <div className="my-2">Empty Trash!</div>;
-            })}
+                } else return <></>;
+              else return <></>;
+            })
+            :
+            <p className="capitalize w-5/6 overflow-hidden text-left">
+              Empty Trash!
+            </p>
+            }
           </div>
-          <div className="relative w-full h-10 flex justify-center items-center border-t-2 bg-black duration-200">
+          <div className="relative w-full h-10 top-[calc(100%-16.666667%-5rem)] flex justify-center items-center border-t-2 bg-black duration-200">
             <button className="font-bold" onClick={handleDefTrash}>
               Empty Your Trash!
             </button>
